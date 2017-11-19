@@ -82,3 +82,64 @@ get with my little Pi.
 
 By now, writing to the SD card still hasn't finished. I will take a short(?) break by playing a bit. Hopefully I will 
 come back here later and finish the post and trying out the SD card on the Pi.
+
+## Testing NixOS on Pi
+
+The SD card is finally written and I can `diskutil unmountDisk disk2` to unmount all volumes and get it out of my 
+laptop. And, as expected, it doesn't work out. Debugging with display and keyboard yields... no display! Great, so the
+Raspberry Pi doesn't seem to start up correctly or as I wished it would.  
+
+Let's fast forward a few hours, since I just played around with different settings while watching a TV show with a lot 
+of commercial breaks: I've tried FAT, exFAT, different blocksizes, like `bs=1m` and doing everything to see that this 
+`dd` approach did not work out as I thought it should after it worked so great with a USB stick on a different occasion 
+with a different OS. 
+
+I think the best way to go forward now is to do the tutorial on the Raspberry Pi page, install NOOBS on the SD card and
+see if the Pi itself generally works and I am using the wrong settings. While doing the tutorial, that means, 
+downloading some obscure SD card formatter, which I could also do with Disk Utility, I could copy the freshly downloaded
+NOOBS Lite version on the card. It works! Okay, so now I'm the one looking stupid. Obviously my configuration settings
+were wrong the whole time.
+
+First of all, I need to format the SD card with FAT, that's what I've been told from the NOOBs tutorial. Then I need to
+see how to get the `.img` file on the disk without breaking anything. Maybe the blocksize stuff can break something? I
+need to learn a bit more now. I will use the official formatting tool now as it might be that the "Master boot record"
+setting is also not what I need. The NOOBs tutorial does not say anything about it, so I am better off using the tools
+presented in a way that I can't really make any mistakes anymore. 
+
+Okay, so it happens to be a completely stupid problem I had when using `dd`: The `.img` file is a real image, containing
+partitions and everything that is needed to set up a whole SD card. Since it is like that, I do not need to just copy 
+the files on the created / formatted partition but on the whole disk. This is kind of embarrassing but also something
+that I guess you have to learn. Thankfully I re-read the NixOS wiki about Raspberry Pi setup and saw that they used `dd`
+on `/dev/sdc`, not `/dev/sdc1` for example. Otherwise I probably wouldn't have tried that out.
+
+Great, took me just under a day, but I am greeted with a `nixos login: root (automatic login)` and a shell. I'm proud of
+myself now and need to take a short break after about 20 different reformats of the SD card. I also need to check out if
+the second HDMI cable works that I have here so I can easily switch between the Pi and my gaming console on the beamer.
+You need to have priorities, right?
+
+And even better: The second HDMI cable works! I can switch between sources and greatly improve my experience: Play while
+waiting for something to finish on the Pi. The only problem is: I don't really need it anymore, as soon as I start using
+`sshd` for a remote login and just use my laptop for it. Then I have two screens: One for gaming and one for working on 
+the Pi! Oh well, if I really try to create an image from the SD card with `sshd` preinstalled, I might need it. But for 
+now, let's find out how to actually use nixos and see how to install `sshd`.
+
+## Using nixos
+
+I don't like the external keyboard and sitting with it on a couch. A laptop gives me a much smoother experience. So the
+next step really to be set up a remote login. SSH is as far as I know the more or less best option out there. Well 
+tested, probably as old as computers exist and you have a complete shell which you can use to do almost anything.
+
+Start the manual! First thing I read is I need to do the installation first. But hey, it also tells me that the 
+installation medium has already `sshd` preinstalled. So I don't even need to install anything, it's already there! Cool!
+Let's try that. First I need to setup a password using `passwd` on the Pi. Then I need to enter `systemctl start sshd`.
+And on the first try, as soon as that command finished, I was able to connect from my Macbook! What a great experience,
+not having to care too much about hardware and just keep staying in the software world...!
+
+To recap, I needed the keyboard for three commands actually:
+
+1. `ip a` - to check the IP address
+2. `passwd` - to set a password that I can use to login from my Mac
+3. `systemctl start sshd` - to start `sshd` and be able to remote login
+
+Actually that is everything why I needed a keyboard and a display for. That has to be scriptable. At some point. In the
+future.
