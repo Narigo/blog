@@ -220,4 +220,20 @@ old `configuration.nix` file. Ouch, that's why I need to reboot again, with hope
 quick search on the internet doesn't really help, so I'll just clone the SD card again and start over. Nothing really
 happened, right? Just another hour elapsed again thanks to not reading the documentation too much... :)
 
+Well, well, well. After another retry I think it might not be the best idea to try the nixos-install. When I did, the 
+system crashed with a not so nice error message and without being responsive to any kind of keyboard input. It looks 
+like it really has trouble detecting hardware as suggested by the strange `hardware-configuration.nix` that got 
+generated before. Or something completely different.
+
+I could see that using `nixos-rebuild` worked and it booted into the new configuration - I hope - when I restarted. I
+think I just might not need to do the install stuff at all. We will see how this works out.
+
+## Starting up sshd on every reboot
+
+Using systemd enable sshd does not work by itself. Putting it into `configuration.nix` with the line 
+`services.sshd.enable = true;` and do a `nixos-rebuild switch` also resulted in an inactive / non-running sshd daemon.
+There has to be something else to do to get it starting up on reboot. Otherwise I always have to use an external display
+and keyboard, whenever I reboot / poweroff the Pi. And I thought I'd only switch it on on-demand, so it really should
+start up something like SSH. Not sure now what to do, I will have a closer look into the documentation and try to get 
+some ideas...
 
