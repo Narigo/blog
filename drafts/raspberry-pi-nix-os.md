@@ -237,3 +237,19 @@ and keyboard, whenever I reboot / poweroff the Pi. And I thought I'd only switch
 start up something like SSH. Not sure now what to do, I will have a closer look into the documentation and try to get 
 some ideas...
 
+In the meantime I found the real [installation instructions for the Raspberry 
+Pi](https://nixos.wiki/wiki/NixOS_on_ARM#NixOS_installation_.26_configuration). Over there I can read that I really 
+should use just `nixos-rebuild` instead of `nixos-install`. So one open question can be closed now. I've copied the
+configuration and added something for sshd. After that, running the `nixos-rebuild` with the options given in the wiki
+worked quite well.
+
+I added more options than just `services.sshd.enable = true`. Most probably the setting `permitRootLogin` is needed as
+long as I don't have a user account set up yet. To do that, I've added the line to `configuration.nix` and saw that 
+`nixos-rebuild` worked. 
+
+1. `permitRootLogin` cannot be set due to unique configuration option. `pkgs.libs.mkForce` seems to do the trick. 
+2. The port number is now `2223` and the list obviously overwrites the default in this case.
+
+I am unsure, why in one case I need to force set it and in another one I don't need to. I should read that up at some 
+point.
+
