@@ -4,9 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "format": "prettier scripts/**/*.js",
+    "publish": "node scripts/publish.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "Joern Bernhardt <jb@campudus.com> (http://www.campudus.com)",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "marked": "^0.3.6",
+    "prettier": "^1.8.2"
+  }
 }

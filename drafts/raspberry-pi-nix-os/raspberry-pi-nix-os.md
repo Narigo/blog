@@ -44,7 +44,7 @@ Next step: Write the image on the SD card. Put it into the SD card slot and iden
 have a Mac Book with an SD card reader like me: Feel good that you did not get one without that. `diskutil list` in the
 terminal yields this information:
 
-[![diskutil list](raspberry-pi-nix-os/diskutil-list.png)](raspberry-pi-nix-os/diskutil-list.png)
+[![diskutil list](diskutil-list.png)](diskutil-list.png)
 
 I don't care what we had on it before, so I can just format it using the program "Disk Utility" on the Mac. `exFat` and 
 `Master Boot Record` sound like the options I want as OS X related is always troublesome with linux and MS Dos (FAT) 
