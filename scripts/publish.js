@@ -1,7 +1,7 @@
 const config = require("../config");
 
 const fs = require("fs");
-const {promisify} = require("util");
+const { promisify } = require("util");
 const marked = require("marked");
 
 const readdir = promisify(fs.readdir);
@@ -11,8 +11,7 @@ const draft = process.argv[2];
 
 const generalMeta = {};
 
-run(draft)
-  .catch(e => console.error(e));
+run(draft).catch(e => console.error(e));
 
 async function run(draft) {
   const drafts = await readdir(`${config.draftsDirectory}/${draft}`);
@@ -26,14 +25,11 @@ async function run(draft) {
     const content = (await readFile(`${config.draftsDirectory}/${draft}/${draft}.md`)).toString();
     const metaArticle = await readFile(`${config.draftsDirectory}/${draft}/${draft}.json`).catch(e => ({}));
     const html = marked(content);
-    const meta = {...generalMeta, ...metaArticle, content: html};
+    const meta = { ...generalMeta, ...metaArticle, content: html };
 
     let template = (await readFile(`${__dirname}/../template/article.html`)).toString();
-    Object.keys(meta).forEach(key => {
-      const replace = `\\$\\{${key}\\}`;
-      console.log("replace", replace);
-      template = template.replace(new RegExp(replace, "g"), meta[key]);
-    });
+    const replace = `\\$\\{(.*?)\\}`;
+    template = template.replace(new RegExp(replace, "g"), (matched, key) => (meta[key] ? meta[key] : "not-found"));
 
     console.log("marked", template);
   } else {
