@@ -1,3 +1,4 @@
 module.exports = {
-  draftsDirectory : `${__dirname}/drafts`
+  blogDirectory: `${__dirname}/blog`,
+  draftsDirectory: `${__dirname}/drafts`
 };
