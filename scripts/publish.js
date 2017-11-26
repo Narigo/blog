@@ -9,8 +9,6 @@ const readFile = promisify(fs.readFile);
 
 const draft = process.argv[2];
 
-const generalMeta = {};
-
 run(draft).catch(e => console.error(e));
 
 async function run(draft) {
@@ -30,6 +28,9 @@ async function publishDraft(draft) {
   const day = now.getUTCDate();
   const resultPath = `${year}/${month}/${day}/${draft}`;
   console.log(`Publishing draft ${draft} into ${resultPath}`);
+  const generalMeta = {
+    lastEditedOn: `${day}.${month}.${year}`
+  };
 
   const content = (await readFile(`${config.draftsDirectory}/${draft}/${draft}.md`)).toString();
   const metaArticle = JSON.parse(
@@ -44,11 +45,14 @@ async function publishDraft(draft) {
 
   await resultPath.split("/").reduce(async (acc, p) => {
     const ps = await acc;
-    return mkdir(`${ps}/${p}`);
-  }, config.blogDirectory);
+    console.log("ps?", ps);
+    return await mkdir(`${ps}/${p}`);
+  }, Promise.resolve(config.blogDirectory));
   await promisify(fs.writeFile)(`${config.blogDirectory}/${resultPath}/index.html`, template);
 }
 
 async function mkdir(path) {
-  return promisify(fs.mkdir)(path).catch(err => (err.code === "EEXIST" ? Promise.resolve(path) : Promise.reject(err)));
+  return promisify(fs.mkdir)(path)
+    .then(() => path)
+    .catch(err => (err.code === "EEXIST" ? Promise.resolve(path) : Promise.reject(err)));
 }
