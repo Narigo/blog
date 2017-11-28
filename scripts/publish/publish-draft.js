@@ -10,21 +10,17 @@ module.exports = {
 };
 
 async function publishDraft(draft, config) {
-  const now = new Date();
-  const year = now.getUTCFullYear();
-  const month = now.getUTCMonth() + 1;
-  const day = now.getUTCDate();
-  const resultPath = `${year}/${month}/${day}/${draft}`;
-  console.log(`Publishing draft ${draft} into ${resultPath}`);
-  const generalMeta = {
-    lastEditedOn: `${day}.${month}.${year}`
-  };
-
   const content = (await readFile(`${config.draftsDirectory}/${draft}/${draft}.md`)).toString();
   const metaArticle = JSON.parse(
     (await readFile(`${config.draftsDirectory}/${draft}/${draft}.json`).catch(e => ({}))).toString()
   );
   const html = marked(content);
+  const { day, month, year, date } = getDateFromDraft(metaArticle);
+  const resultPath = `${year}/${month}/${day}/${draft}`;
+  console.log(`Publishing draft ${draft} into ${resultPath}`);
+  const generalMeta = {
+    lastEditedOn: date
+  };
   const meta = { ...generalMeta, ...metaArticle, content: html };
 
   let template = (await readFile(`${config.templateDirectory}/article.html`)).toString();
@@ -33,6 +29,15 @@ async function publishDraft(draft, config) {
 
   await mkdirp(config.blogDirectory, resultPath);
   await promisify(fs.writeFile)(`${config.blogDirectory}/${resultPath}/index.html`, template);
+}
+
+function getDateFromDraft(metaArticle) {
+  const now = metaArticle.createdAt ? new Date(metaArticle.createdAt) : new Date();
+  const year = now.getUTCFullYear();
+  const month = now.getUTCMonth() + 1;
+  const day = now.getUTCDate();
+
+  return { day, month, year, date: now };
 }
 
 async function mkdirp(workingDir, path) {

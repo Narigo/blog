@@ -6,6 +6,7 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>${title}</title>
+  <link ref="stylesheet" href="/template/styles.css" />
 </head>
 <body>
 <header>
@@ -15,7 +16,7 @@
 </header>
 <article>
   <h2>${title}</h2>
-  <div class="date">${lastEditedOn}</div>
+  <div class="date">${createdAt} ~ ${lastEditedOn}</div>
   <div class="article">${content}</div>
 </article>
 <footer>
