@@ -24,8 +24,8 @@ async function publishDraft(draft, config) {
   const meta = { ...generalMeta, ...metaArticle, content: html };
 
   let template = (await readFile(`${config.templateDirectory}/article.html`)).toString();
-  const replace = `\\$\\{(.*?)\\}`;
-  template = template.replace(new RegExp(replace, "g"), (matched, key) => (meta[key] ? meta[key] : "not-found"));
+  const replace = `\\$\\{((?:\{.*?}|[^}])+?)\\}`;
+  template = template.replace(new RegExp(replace, "g"), (matched, key) => (meta[key] ? meta[key] : eval(key)));
 
   await mkdirp(config.blogDirectory, resultPath);
   await promisify(fs.writeFile)(`${config.blogDirectory}/${resultPath}/index.html`, template);

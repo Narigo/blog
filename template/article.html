@@ -16,7 +16,7 @@
 </header>
 <article>
   <h2>${title}</h2>
-  <div class="date">${createdAt} ~ ${lastEditedOn}</div>
+  <div class="date">${meta.createdAt && `${meta.createdAt} ~ `}${lastEditedOn}</div>
   <div class="article">${content}</div>
 </article>
 <footer>
