@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "format": "prettier scripts/**/*.js",
+    "format": "prettier scripts/**/*.js --write",
     "publish": "node scripts/publish.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
