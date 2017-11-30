@@ -22,8 +22,7 @@ async function publishDraft(draft, config) {
   const article = { ...meta, content: html };
 
   let template = (await readFile(`${config.templateDirectory}/article.html`)).toString();
-  const replace = `\\$\\{((?:\{.*?}|[^}])+?)\\}`;
-  template = template.replace(new RegExp(replace, "g"), (matched, key) => (article[key] ? article[key] : eval(key)));
+  template = eval("`" + template + "`");
 
   console.log(`Updating draft ${draft} meta-data.`);
   await writeFile(metaFile, `${JSON.stringify(meta, null, 2)}\n`);
