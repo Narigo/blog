@@ -11,21 +11,30 @@ module.exports = {
 };
 
 async function publishDraft(draft, config) {
-  const content = (await readFile(`${config.draftsDirectory}/${draft}/${draft}.md`)).toString();
   const metaFile = `${config.draftsDirectory}/${draft}/${draft}.json`;
   const metaFileString = (await readFile(metaFile).catch(e => ({}))).toString();
   const metaArticle = JSON.parse(metaFileString);
-  const html = marked(content);
+  const html = await getContentOfPost(draft, config);
   const { day, month, year, createdAt, lastEditedOn } = getDateFromDraft(metaArticle);
-  const resultPath = `${year}/${month}/${day}/${draft}`;
   const meta = { createdAt, ...metaArticle, lastEditedOn };
-  const article = { ...meta, content: html };
+
+  console.log(`Updating draft ${draft} meta-data.`);
+  await writeFile(metaFile, `${JSON.stringify(meta, null, 2)}\n`);
+  await writePost(draft, meta, html, day, month, year, config);
+}
+
+async function getContentOfPost(name, config) {
+  const content = (await readFile(`${config.draftsDirectory}/${name}/${name}.md`)).toString();
+  return marked(content);
+}
+
+async function writePost(draft, meta, content, day, month, year, config) {
+  const resultPath = `${year}/${month}/${day}/${draft}`;
+  const article = { ...meta, content };
 
   let template = (await readFile(`${config.templateDirectory}/article.html`)).toString();
   template = eval("`" + template + "`");
 
-  console.log(`Updating draft ${draft} meta-data.`);
-  await writeFile(metaFile, `${JSON.stringify(meta, null, 2)}\n`);
   console.log(`Publishing draft ${draft} into ${resultPath}`);
   await mkdirp(config.blogDirectory, resultPath);
   await promisify(fs.writeFile)(`${config.blogDirectory}/${resultPath}/index.html`, template);
