@@ -20,3 +20,8 @@ post from it. It will create a `.json` if none exists and add a `createdAt` fiel
 
 If I need to change a published post, I can edit it directly and another run of `npm run publish <draft-name>` takes 
 care of updating the `lastEditedOn` field. Hopefully.
+
+## Rebuilding the blog
+
+`npm run build` recreates all published posts with the template in `template/article.html`. This is useful to change the
+design later.

@@ -7,8 +7,19 @@ const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 
 module.exports = {
-  publishDraft
+  publishDraft,
+  buildArticle
 };
+
+async function buildArticle(post, config) {
+  const metaArticle = post.meta;
+  const html = await getContentOfPost(post.name, config);
+  const { day, month, year, createdAt, lastEditedOn } = getDateFromDraft(metaArticle);
+  const meta = { createdAt, ...metaArticle, lastEditedOn };
+
+  console.log(`Building post ${post.name}`);
+  await writePost(post.name, meta, html, day, month, year, config);
+}
 
 async function publishDraft(draft, config) {
   const metaFile = `${config.draftsDirectory}/${draft}/${draft}.json`;
