@@ -1,4 +1,17 @@
-<!doctype html>
+${
+  datefmt = (d) => {
+    const x = new Date(d);
+    const day = x.getUTCDay();
+    const month = x.getUTCMonth() + 1;
+    const year = x.getUTCFullYear();
+    const str = `${day}.${month}.${year}`;
+    console.log("d=", d);
+    console.log("x=", x);
+    console.log("day=", day);
+    console.log("str=", str);
+    return str;
+  }
+}<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -16,9 +29,8 @@
 </header>
 <article>
   <h2>${article.title}</h2>
-  <div class="date">${`${article.createdAt}`}${
-    article.createdAt !== article.lastEditedOn
-      ? ` ~ ${article.lastEditedOn}`
+  <div class="date">${`${datefmt(article.createdAt)}`}${article.createdAt !== article.lastEditedOn
+      ? ` ~ ${datefmt(article.lastEditedOn)}`
       : ""
     }</div>
   <div class="article">${article.content}</div>

@@ -14,10 +14,12 @@ module.exports = {
 async function buildArticle(post, config) {
   const metaArticle = post.meta;
   const html = await getContentOfPost(post.name, config);
-  const { day, month, year, createdAt, lastEditedOn } = getDateFromDraft(metaArticle);
-  const meta = { createdAt, ...metaArticle, lastEditedOn };
+  const lastEditedOn = metaArticle.lastEditedOn || metaArticle.createdAt;
+  console.log("build with times", metaArticle);
+  const { day, month, year} = getDateFromDraft(metaArticle, lastEditedOn);
+  const meta = { ...metaArticle, lastEditedOn };
 
-  console.log(`Building post ${post.name}`);
+  console.log(`Building post ${post.name}`, meta);
   await writePost(post.name, meta, html, day, month, year, config);
 }
 
@@ -26,7 +28,7 @@ async function publishDraft(draft, config) {
   const metaFileString = (await readFile(metaFile).catch(e => ({}))).toString();
   const metaArticle = JSON.parse(metaFileString);
   const html = await getContentOfPost(draft, config);
-  const { day, month, year, createdAt, lastEditedOn } = getDateFromDraft(metaArticle);
+  const { day, month, year, createdAt, lastEditedOn } = getDateFromDraft(metaArticle, (new Date()).toISOString());
   const meta = { createdAt, ...metaArticle, lastEditedOn };
 
   console.log(`Updating draft ${draft} meta-data.`);
@@ -51,9 +53,9 @@ async function writePost(draft, meta, content, day, month, year, config) {
   await promisify(fs.writeFile)(`${config.blogDirectory}/${resultPath}/index.html`, template);
 }
 
-function getDateFromDraft(metaArticle) {
-  const lastEditedOn = new Date();
-  const createdAt = metaArticle.createdAt ? new Date(metaArticle.createdAt) : lastEditedOn;
+function getDateFromDraft(metaArticle, lastEditedOn) {
+  const createdAt = new Date(metaArticle.createdAt ? metaArticle.createdAt : lastEditedOn);
+  console.log("createdAt=", createdAt);
   const year = createdAt.getUTCFullYear();
   const month = createdAt.getUTCMonth() + 1;
   const day = createdAt.getUTCDate();
