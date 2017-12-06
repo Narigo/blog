@@ -41,12 +41,16 @@ async function getContentOfPost(name, config) {
   return marked(content);
 }
 
+function makeArticle(article, template) {
+  return eval("`" + template + "`");
+}
+
 async function writePost(draft, meta, content, day, month, year, config) {
   const resultPath = `${year}/${month}/${day}/${draft}`;
-  const article = { ...meta, content };
 
   let template = (await readFile(`${config.templateDirectory}/article.html`)).toString();
-  template = eval("`" + template + "`");
+  const article = { ...meta, content };
+  template = makeArticle(article, template);
 
   console.log(`Publishing draft ${draft} into ${resultPath}`);
   await mkdirp(config.blogDirectory, resultPath);
