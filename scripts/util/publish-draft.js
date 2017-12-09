@@ -15,7 +15,6 @@ async function buildArticle(post, config) {
   const metaArticle = post.meta;
   const html = await getContentOfPost(post.name, config);
   const lastEditedOn = metaArticle.lastEditedOn || metaArticle.createdAt;
-  console.log("build with times", metaArticle);
   const { day, month, year} = getDateFromDraft(metaArticle, lastEditedOn);
   const meta = { ...metaArticle, lastEditedOn };
 
@@ -59,7 +58,6 @@ async function writePost(draft, meta, content, day, month, year, config) {
 
 function getDateFromDraft(metaArticle, lastEditedOn) {
   const createdAt = new Date(metaArticle.createdAt ? metaArticle.createdAt : lastEditedOn);
-  console.log("createdAt=", createdAt);
   const year = createdAt.getUTCFullYear();
   const month = createdAt.getUTCMonth() + 1;
   const day = createdAt.getUTCDate();
