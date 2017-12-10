@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { promisify } = require("util");
-const { publishDraft } = require("./util/publish-draft");
+const { publishDraft } = require("./util/building");
 const config = require("../config");
 
 const readdir = promisify(fs.readdir);
