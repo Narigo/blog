@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Building a blog</title>
+  <link rel="stylesheet" href="../../../../styles.css" />
+</head>
+<body>
+<header>
+  <nav class="main">
+    <a href="../../../../">Main</a>
+  </nav>
+</header>
+<article>
+  <h2>Building a blog</h2>
+  <div class="date">01.12.2017<span class="last-edited-on">last edit on 11.12.2017</span></div>
+  <div class="article"><h1 id="building-a-blog">Building a blog</h1>
+<p>This post will guide through how to use this blog &quot;engine&quot; and why I&#39;ve built it. </p>
+<h2 id="usage">Usage</h2>
+<p>I just want Markdown files being converted to blog posts, so the usage should be very simple for this use case.</p>
+<h3 id="creating-a-post">Creating a post</h3>
+<p>This should change. For now, I&#39;ll just create a new directory under <code>/drafts</code>, call it whatever I want and put an <code>.md</code> 
+file with the same name under it. You can add meta data like title by adding a <code>.json</code> file into that directory.</p>
+<h3 id="publishing-a-post">Publishing a post</h3>
+<p>The command <code>npm run publish &lt;draft-name&gt;</code> uses the <code>.json</code> and <code>.md</code> files inside the draft directory and creates a 
+post from it. It will create a <code>.json</code> if none exists and add a <code>createdAt</code> field to it with the current date.</p>
+<h3 id="editing-a-published-post">Editing a published post</h3>
+<p>If I need to change a published post, I can edit it directly and another run of <code>npm run publish &lt;draft-name&gt;</code> takes 
+care of updating the <code>lastEditedOn</code> field. Hopefully.</p>
+<h3 id="rebuilding-the-blog">Rebuilding the blog</h3>
+<p><code>npm run build</code> recreates all published posts with the template in <code>template/article.html</code>. This is useful to change the
+design whenever I want to.</p>
+<h2 id="motivation">Motivation</h2>
+<p>There are a lot of frameworks available to create your own blog. I thought it makes sense to give some reasons why I&#39;ve
+built yet another one.</p>
+<ol>
+<li>Building stuff is fun! Why evaluate and decide between established frameworks that are probably not as flexible as I
+wish them to be when building one myself seems possible?</li>
+<li>GitHub is free for doing things open source and it&#39;s free to host something as simple as this. I do not expect this 
+to get very popular, so I am able to learn and try out a few things while building it.</li>
+<li>Automating workflows is something I want to get better with and this enables me to get more into an automation 
+workflow.</li>
+<li>I want to be able to link to my thoughts when I create something new. Doing so by creating blog postsseems like a 
+good idea. </li>
+<li>Maybe this gets updated a bit more so I can make it reusable at some point.</li>
+</ol>
+</div>
+</article>
+<footer>
+  ~
+</footer>
+</body>
+</html>

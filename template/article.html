@@ -21,13 +21,13 @@ const datefmt = (d) => {
 <body>
 <header>
   <nav class="main">
-    <a href="/">Main</a>
+    <a href="../../../../">Main</a>
   </nav>
 </header>
 <article>
   <h2>${article.title}</h2>
   <div class="date">${`${datefmt(article.createdAt)}`}${article.createdAt !== article.lastEditedOn
-      ? ` ~ ${datefmt(article.lastEditedOn)}`
+    ? `<span class="last-edited-on">last edit on ${datefmt(article.lastEditedOn)}</span>`
       : ""
     }</div>
   <div class="article">${article.content}</div>

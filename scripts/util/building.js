@@ -15,24 +15,24 @@ async function buildArticle(post, config) {
   const metaArticle = post.meta;
   const html = await getContentOfPost(post.name, config);
   const lastEditedOn = metaArticle.lastEditedOn || metaArticle.createdAt;
-  const { day, month, year} = getDateFromDraft(metaArticle, lastEditedOn);
+  const { day, month, year } = getDateFromDraft(metaArticle, lastEditedOn);
   const meta = { ...metaArticle, lastEditedOn };
 
   console.log(`Building post ${post.name}`, meta);
-  await writePost(post.name, meta, html, day, month, year, config);
+  await writePost({ post: { ...meta, name: post.name, content: html }, day, month, year, config });
 }
 
-async function publishDraft(draft, config) {
-  const metaFile = `${config.draftsDirectory}/${draft}/${draft}.json`;
+async function publishDraft(name, config) {
+  const metaFile = `${config.draftsDirectory}/${name}/${name}.json`;
   const metaFileString = (await readFile(metaFile).catch(e => ({}))).toString();
   const metaArticle = JSON.parse(metaFileString);
-  const html = await getContentOfPost(draft, config);
-  const { day, month, year, createdAt, lastEditedOn } = getDateFromDraft(metaArticle, (new Date()).toISOString());
+  const html = await getContentOfPost(name, config);
+  const { day, month, year, createdAt, lastEditedOn } = getDateFromDraft(metaArticle, new Date().toISOString());
   const meta = { createdAt, ...metaArticle, lastEditedOn };
 
-  console.log(`Updating draft ${draft} meta-data.`);
+  console.log(`Updating draft ${name} meta-data.`);
   await writeFile(metaFile, `${JSON.stringify(meta, null, 2)}\n`);
-  await writePost(draft, meta, html, day, month, year, config);
+  await writePost({ post: { meta, name, content: html }, day, month, year, config });
 }
 
 async function getContentOfPost(name, config) {
@@ -44,14 +44,15 @@ function makeArticle(article, template) {
   return eval("`" + template + "`");
 }
 
-async function writePost(draft, meta, content, day, month, year, config) {
-  const resultPath = `${year}/${month}/${day}/${draft}`;
+async function writePost({ post, day, month, year, config }) {
+  const nf = n => (n < 10 ? "0" : "") + n;
+  const resultPath = `${year}/${nf(month)}/${nf(day)}/${post.name}`;
 
   let template = (await readFile(`${config.templateDirectory}/article.html`)).toString();
-  const article = { ...meta, content };
+  const article = { ...post.meta, ...post };
   template = makeArticle(article, template);
 
-  console.log(`Publishing draft ${draft} into ${resultPath}`);
+  console.log(`Publishing post ${post.name} into ${resultPath}`);
   await mkdirp(config.blogDirectory, resultPath);
   await promisify(fs.writeFile)(`${config.blogDirectory}/${resultPath}/index.html`, template);
 }
