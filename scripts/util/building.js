@@ -8,7 +8,8 @@ const writeFile = promisify(fs.writeFile);
 
 module.exports = {
   publishDraft,
-  buildArticle
+  buildArticle,
+  getDateFromDraft
 };
 
 async function buildArticle(post, config) {

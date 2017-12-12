@@ -1,16 +1,37 @@
 const fs = require("fs");
 const { promisify } = require("util");
-const { buildArticle } = require("./util/building");
+const { buildArticle, getDateFromDraft } = require("./util/building");
 const config = require("../config");
 
 const readdir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
 
 run().catch(e => console.error(e));
 
 async function run() {
-  await buildArticles();
   await copyAssets();
+  const publishedPosts = await getPublishedPosts();
+  await buildIndex(publishedPosts.map(post => ({...post.meta, ...post})));
+  await buildArticles(publishedPosts);
+}
+
+async function buildIndex(posts) {
+  const template = await readFile(`${config.templateDirectory}/index.html`);
+  const util = {
+    link(post) {
+      console.log("post=", post);
+      const { day, month, year } = getDateFromDraft(post.meta, post.meta.createdAt);
+      const nf = n => (n < 10 ? "0" : "") + n;
+      return `${year}/${nf(month)}/${nf(day)}/${post.name}`;
+    }
+  };
+  const index = makeIndex(posts, util, template);
+  return writeFile(`${config.blogDirectory}/index.html`, index);
+}
+
+function makeIndex(posts, util, template) {
+  return eval("`" + template + "`");
 }
 
 async function copyAssets() {
@@ -18,7 +39,7 @@ async function copyAssets() {
   const files = await readdir(assetsDir);
   files.reduce(async (acc, file) => {
     await acc;
-    await copyFile(`${assetsDir}/${file}`, `${config.blogDirectory}/${file}`)
+    await copyFile(`${assetsDir}/${file}`, `${config.blogDirectory}/${file}`);
   }, Promise.resolve());
 }
 
@@ -32,9 +53,12 @@ function copyFile(from, to) {
   });
 }
 
-async function buildArticles() {
+async function getPublishedPosts() {
   const drafts = await readdir(config.draftsDirectory);
-  const publishedPosts = await drafts.reduce(filterPublishedDraft, Promise.resolve([]));
+  return await drafts.reduce(filterPublishedDraft, Promise.resolve([]));
+}
+
+async function buildArticles(publishedPosts) {
   await publishedPosts.reduce(async (p, post) => {
     await p;
     return buildArticle(post, config);
