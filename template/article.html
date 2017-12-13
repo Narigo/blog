@@ -1,14 +1,4 @@
-`;
-const datefmt = (d) => {
-  const nf = n => n < 10 ? `0${n}` : n;
-  const x = new Date(d);
-  const date = x.getUTCDate();
-  const month = x.getUTCMonth() + 1;
-  const year = x.getUTCFullYear();
-  const str = `${nf(date)}.${nf(month)}.${year}`;
-  return str;
-};
-`<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -26,8 +16,8 @@ const datefmt = (d) => {
 </header>
 <article>
   <h2>${article.title}</h2>
-  <div class="date">${`${datefmt(article.createdAt)}`}${article.createdAt !== article.lastEditedOn
-    ? `<span class="last-edited-on">last edit on ${datefmt(article.lastEditedOn)}</span>`
+  <div class="date">${`${util.datefmt(article.createdAt)}`}${article.createdAt !== article.lastEditedOn
+    ? `<span class="last-edited-on">last edit on ${util.datefmt(article.lastEditedOn)}</span>`
       : ""
     }</div>
   <div class="article">${article.content}</div>

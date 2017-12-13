@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { promisify } = require("util");
-const { buildArticle, getDateFromDraft } = require("./util/building");
+const { buildArticle } = require("./util/building");
+const util = require("./util/util");
 const config = require("../config");
 
 const readdir = promisify(fs.readdir);
@@ -18,14 +19,6 @@ async function run() {
 
 async function buildIndex(posts) {
   const template = await readFile(`${config.templateDirectory}/index.html`);
-  const util = {
-    link(post) {
-      console.log("post=", post);
-      const { day, month, year } = getDateFromDraft(post.meta, post.meta.createdAt);
-      const nf = n => (n < 10 ? "0" : "") + n;
-      return `${year}/${nf(month)}/${nf(day)}/${post.name}`;
-    }
-  };
   const index = makeIndex(posts, util, template);
   return writeFile(`${config.blogDirectory}/index.html`, index);
 }
