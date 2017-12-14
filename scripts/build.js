@@ -13,7 +13,7 @@ run().catch(e => console.error(e));
 async function run() {
   await copyAssets();
   const publishedPosts = await getPublishedPosts();
-  await buildIndex(publishedPosts.map(post => ({...post.meta, ...post})));
+  await buildIndex(publishedPosts.map(post => ({ ...post.meta, ...post })));
   await buildArticles(publishedPosts);
 }
 
@@ -47,8 +47,13 @@ function copyFile(from, to) {
 }
 
 async function getPublishedPosts() {
-  const drafts = await readdir(config.draftsDirectory);
-  return await drafts.reduce(filterPublishedDraft, Promise.resolve([]));
+  const posts = await readdir(config.postsDirectory);
+  return posts.reduce(async (allPosts, post) => [...await allPosts, await metaFromPost(post)], Promise.resolve([]));
+
+  async function metaFromPost(post) {
+    const meta = await readFile(`${config.postsDirectory}/${post}/${post}.json`).then(JSON.parse);
+    return { meta, name: post };
+  }
 }
 
 async function buildArticles(publishedPosts) {
@@ -56,17 +61,4 @@ async function buildArticles(publishedPosts) {
     await p;
     return buildArticle(post, config);
   }, Promise.resolve());
-}
-
-async function filterPublishedDraft(publishedDrafts, draft) {
-  const drafts = await publishedDrafts;
-  try {
-    const meta = await readFile(`${config.draftsDirectory}/${draft}/${draft}.json`).then(JSON.parse);
-    return !!meta.createdAt ? [...drafts, { meta, name: draft }] : drafts;
-  } catch (e) {
-    if (e.code !== "ENOENT") {
-      console.error(e);
-    }
-    return drafts;
-  }
 }

@@ -8,18 +8,22 @@ I just want Markdown files being converted to blog posts, so the usage should be
 
 ### Creating a post
 
-This should change. For now, I'll just create a new directory under `/drafts`, call it whatever I want and put an `.md` 
-file with the same name under it. You can add meta data like title by adding a `.json` file into that directory.
+This should change. For now, I'll just create a new directory under `/posts/drafts`, call it whatever I want and put an
+`.md` file with the same name under it. You can add meta data like title by adding a `.json` file into that directory.
 
 ### Publishing a post
 
 The command `npm run publish <draft-name>` uses the `.json` and `.md` files inside the draft directory and creates a 
 post from it. It will create a `.json` if none exists and add a `createdAt` field to it with the current date.
 
+It will also move the whole directory of the post from `/posts/drafts/<draft-name>` into 
+`/posts/published/<draft-name>`.
+
 ### Editing a published post
 
 If I need to change a published post, I can edit it directly and another run of `npm run publish <draft-name>` takes 
-care of updating the `lastEditedOn` field. Hopefully.
+care of updating the `lastEditedOn` field. It will try to find the draft in `/posts/published/<draft-name>` first and if
+it doesn't find it there, it will resort to a regular publish.
 
 ### Rebuilding the blog
 

@@ -5,15 +5,19 @@ const util = require("./util");
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
+const rename = promisify(fs.rename);
+const stat = promisify(fs.stat);
 
 module.exports = {
-  publishDraft,
-  buildArticle
+  buildArticle,
+  getDirectoryOfPost,
+  publishDraft
 };
 
 async function buildArticle(post, config) {
   const metaArticle = post.meta;
-  const html = await getContentOfPost(post.name, config);
+  const postDirectory = await getDirectoryOfPost(post.name, config);
+  const html = await getContentOfPost(postDirectory, post.name);
   const lastEditedOn = metaArticle.lastEditedOn || metaArticle.createdAt;
   const { day, month, year } = util.getDateFromPost(metaArticle, lastEditedOn);
   const meta = { ...metaArticle, lastEditedOn };
@@ -22,21 +26,42 @@ async function buildArticle(post, config) {
   await writePost({ post: { ...meta, name: post.name, content: html }, day, month, year, config });
 }
 
+async function getDirectoryOfPost(name, config) {
+  const postsDir = `${config.postsDirectory}/${name}`;
+  const draftsDir = `${config.draftsDirectory}/${name}`;
+  return stat(postsDir)
+    .then(() => postsDir)
+    .catch(e => (e.code === "ENOENT" ? stat(draftsDir) : Promise.reject(e)));
+}
+
 async function publishDraft(name, config) {
-  const metaFile = `${config.draftsDirectory}/${name}/${name}.json`;
+  const directory = await getDirectoryOfPost(name, config);
+  const metaFile = `${directory}/${name}.json`;
   const metaFileString = (await readFile(metaFile).catch(e => ({}))).toString();
   const metaArticle = JSON.parse(metaFileString);
-  const html = await getContentOfPost(name, config);
+  const html = await getContentOfPost(directory, name);
   const { day, month, year, createdAt, lastEditedOn } = util.getDateFromPost(metaArticle, new Date().toISOString());
   const meta = { createdAt, ...metaArticle, lastEditedOn };
 
   console.log(`Updating draft ${name} meta-data.`);
   await writeFile(metaFile, `${JSON.stringify(meta, null, 2)}\n`);
   await writePost({ post: { meta, name, content: html }, day, month, year, config });
+  await moveDraftToPost(name, config);
 }
 
-async function getContentOfPost(name, config) {
-  const content = (await readFile(`${config.draftsDirectory}/${name}/${name}.md`)).toString();
+async function moveDraftToPost(name, config) {
+  try {
+    await rename(`${config.draftsDirectory}/${name}`, `${config.postsDirectory}/${name}`);
+  } catch (e) {
+    if (e.code !== "ENOENT") {
+      console.error("Error moving draft to published posts", e);
+      throw e;
+    }
+  }
+}
+
+async function getContentOfPost(directory, name) {
+  const content = (await readFile(`${directory}/${name}.md`)).toString();
   return marked(content);
 }
 

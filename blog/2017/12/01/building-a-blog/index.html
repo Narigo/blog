@@ -16,20 +16,23 @@
 </header>
 <article>
   <h2>Building a blog</h2>
-  <div class="date">01.12.2017<span class="last-edited-on">last edit on 11.12.2017</span></div>
+  <div class="date">01.12.2017<span class="last-edited-on">last edit on 14.12.2017</span></div>
   <div class="article"><h1 id="building-a-blog">Building a blog</h1>
 <p>This post will guide through how to use this blog &quot;engine&quot; and why I&#39;ve built it. </p>
 <h2 id="usage">Usage</h2>
 <p>I just want Markdown files being converted to blog posts, so the usage should be very simple for this use case.</p>
 <h3 id="creating-a-post">Creating a post</h3>
-<p>This should change. For now, I&#39;ll just create a new directory under <code>/drafts</code>, call it whatever I want and put an <code>.md</code> 
-file with the same name under it. You can add meta data like title by adding a <code>.json</code> file into that directory.</p>
+<p>This should change. For now, I&#39;ll just create a new directory under <code>/posts/drafts</code>, call it whatever I want and put an
+<code>.md</code> file with the same name under it. You can add meta data like title by adding a <code>.json</code> file into that directory.</p>
 <h3 id="publishing-a-post">Publishing a post</h3>
 <p>The command <code>npm run publish &lt;draft-name&gt;</code> uses the <code>.json</code> and <code>.md</code> files inside the draft directory and creates a 
 post from it. It will create a <code>.json</code> if none exists and add a <code>createdAt</code> field to it with the current date.</p>
+<p>It will also move the whole directory of the post from <code>/posts/drafts/&lt;draft-name&gt;</code> into 
+<code>/posts/published/&lt;draft-name&gt;</code>.</p>
 <h3 id="editing-a-published-post">Editing a published post</h3>
 <p>If I need to change a published post, I can edit it directly and another run of <code>npm run publish &lt;draft-name&gt;</code> takes 
-care of updating the <code>lastEditedOn</code> field. Hopefully.</p>
+care of updating the <code>lastEditedOn</code> field. It will try to find the draft in <code>/posts/published/&lt;draft-name&gt;</code> first and if
+it doesn&#39;t find it there, it will resort to a regular publish.</p>
 <h3 id="rebuilding-the-blog">Rebuilding the blog</h3>
 <p><code>npm run build</code> recreates all published posts with the template in <code>template/article.html</code>. This is useful to change the
 design whenever I want to.</p>
