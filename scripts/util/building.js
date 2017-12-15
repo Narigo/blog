@@ -31,13 +31,14 @@ async function getDirectoryOfPost(name, config) {
   const draftsDir = `${config.draftsDirectory}/${name}`;
   return stat(postsDir)
     .then(() => postsDir)
-    .catch(e => (e.code === "ENOENT" ? stat(draftsDir) : Promise.reject(e)));
+    .catch(e => (e.code === "ENOENT" ? stat(draftsDir).then(() => draftsDir) : Promise.reject(e)));
 }
 
 async function publishDraft(name, config) {
   const directory = await getDirectoryOfPost(name, config);
   const metaFile = `${directory}/${name}.json`;
-  const metaFileString = (await readFile(metaFile).catch(e => ({}))).toString();
+  const metaFileString = (await readFile(metaFile).catch(e => "{}")).toString();
+  console.log(metaFileString);
   const metaArticle = JSON.parse(metaFileString);
   const html = await getContentOfPost(directory, name);
   const { day, month, year, createdAt, lastEditedOn } = util.getDateFromPost(metaArticle, new Date().toISOString());

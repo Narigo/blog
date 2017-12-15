@@ -253,3 +253,10 @@ long as I don't have a user account set up yet. To do that, I've added the line 
 I am unsure, why in one case I need to force set it and in another one I don't need to. I should read that up at some 
 point.
 
+## Updating the system and planning the next steps
+
+I did not really went very far after just setting it up and having it start SSH every time. To get to a point that my 
+RaspberryPi with NixOS is really useful for me, I need to plan ahead now. SSH is just the first step to get it done.
+
+Since I haven't played around with it for a few weeks now, I need to check and update the system first. This is going to
+be tough as I might have already forgotten the password I've set up before... I'll better make a second part. :)
