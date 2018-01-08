@@ -57,7 +57,8 @@ If I would try to make this better, I would have a look into phonetic word lists
 ## Demo
 
 I've created a little demo page inside of the repository that can be run when doing a `npm run demo`. This will start up
-a small HTTP server via Python. Most probably I will create a real page for it somewhere soon.
+a small HTTP server via Python. Most probably I will put that page online somewhere and remove the demo server from the
+module.
 
 ## Conclusion
 
