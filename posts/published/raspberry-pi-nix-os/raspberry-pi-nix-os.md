@@ -51,15 +51,49 @@ I don't care what we had on it before, so I can just format it using the program
 just sounds "too old". Who knows, maybe "exFAT" is older than "FAT", but I'm actually just too lazy to use a search 
 engine now.
 
+> **Update:** As I am doing the whole steps again and in the meantime upgraded to High Sierra, the option to create a 
+> Master Boot Record is gone. As I couldn't really remember what steps I took, I realized after a lot of back and forth,
+> that I don't even need a formatted disk, but a completely empty disk. I have a `.img` file, so a full snapshot of a 
+> system, I suppose. The command to erase the disk:
+> 
+> ```bash
+> sudo diskutil partitionDisk /dev/disk2 1 MBR "Free Space" "%noformat%" 100%
+> ```
+> 
+> This resulted in a `diskutil list` entry for it like this:
+>
+> ```
+> /dev/disk2 (internal, physical):
+>    #:                       TYPE NAME                    SIZE       IDENTIFIER
+>    0:                                                   *31.9 GB    disk2
+> ```
+>
+> After that, I could put the image on the SD card as before.
+
 To put the image file on the SD card, I will use this command:
 
 ```bash
-sudo dd if=/Users/joern/Downloads/sd-image-armv6l-linux.img of=/dev/rdisk2s1
-``` 
+sudo dd if=/Users/joern/Downloads/sd-image-armv6l-linux.img of=/dev/rdisk2 bs=1m conv=sync
+```
 
-Using the `/dev/rdisk2s1` is a lot better than `/dev/disk2s1` as it uses the "raw" disk if I remember correctly. If you 
-don't use `r` before the disk/partition name, you will have to wait a LOT longer until writing to it finishes. I 
-wouldn't want to waste so much time. It still takes a few minutes but in my memory, it took an hour or so not using `r`.
+`bs=1m` makes it a lot faster. `conv=sync` is set in the official docs as well, so I've included it here even though I 
+don't really know what this does. It also should work with `/dev/disk2`, but that would also be slower.
+
+> **Update:** So to recap, I'm using a `.img` file here, which includes its own partition table etc. I need to write it
+> on the whole disk, not on a single partition. If I had a `.iso` file, I should probably have a look and partition the
+> disk myself before writing it on the bootable partition I just created.
+> 
+> As a heads-up, the `diskutil list` output after writing the `.img` yields:
+>
+> ```
+> /dev/disk2 (internal, physical):
+>    #:                       TYPE NAME                    SIZE       IDENTIFIER
+>    0:     FDisk_partition_scheme                        *31.9 GB    disk2
+>    1:                 DOS_FAT_32 NIXOS_BOOT              125.8 MB   disk2s1
+>    2:                      Linux                         1.8 GB     disk2s2
+> ```
+>
+> ...and my RaspberryPi boots into nixos with it! :)
 
 ## Thinking about testing the SD card on the Pi
 

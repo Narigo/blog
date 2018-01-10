@@ -16,7 +16,7 @@
 </header>
 <article>
   <h2>NixOS on RaspberryPi</h2>
-  <div class="date">21.11.2017<span class="last-edited-on">last edit on 15.12.2017</span></div>
+  <div class="date">21.11.2017<span class="last-edited-on">last edit on 10.01.2018</span></div>
   <div class="article"><h1 id="raspberry-pi-and-nixos">Raspberry Pi and NixOS</h1>
 <p>Today I want to try out how to set up my old Raspberry Pi and put NixOS on it. I want to try out that system since last 
 year, but never came around to do it. Since someone at the chaos congress took about 3 hours explaining NixOS to me, I 
@@ -38,8 +38,8 @@ first try. But hey, optimism for the win.</p>
 <p>Good, lets find a way to identify my Raspberry Pi model and see what image we need. Google probably already knows what I
 own, so the search term is an optimistic <a href="https://encrypted.google.com/search?hl=de&amp;q=which%20raspberry%20pi%20do%20i%20own">which raspberry pi do i 
 own</a>. The first result for me is 
-<a href="https://www.element14.com/community/docs/DOC-78141/l/identifying-your-model-of-raspberry-pi">this page</a> which I 
-definitely will not link in a SEO friendly way by referring to it as &quot;this page&quot;. It lets me have a glance at a table 
+<a href="https://www.element14.com/community/docs/DOC-78141/l/identifying-your-model-of-raspberry-pi">this page</a> which I </p>
+<p>definitely will not link in a SEO friendly way by referring to it as &quot;this page&quot;. It lets me have a glance at a table 
 that contains the needed information, but creates an overlay right away telling me to &quot;register&quot; and be a member of a 
 community I never heard of. Surely I could become one, but why do I have to give them an e-mail address if Google can 
 read the necessary information just by being a search engine? I should be able to read that information myself as well, 
@@ -58,12 +58,36 @@ terminal yields this information:</p>
 <code>Master Boot Record</code> sound like the options I want as OS X related is always troublesome with linux and MS Dos (FAT) 
 just sounds &quot;too old&quot;. Who knows, maybe &quot;exFAT&quot; is older than &quot;FAT&quot;, but I&#39;m actually just too lazy to use a search 
 engine now.</p>
-<p>To put the image file on the SD card, I will use this command:</p>
-<pre><code class="lang-bash">sudo dd if=/Users/joern/Downloads/sd-image-armv6l-linux.img of=/dev/rdisk2s1
+<blockquote>
+<p><strong>Update:</strong> As I am doing the whole steps again and in the meantime upgraded to High Sierra, the option to create a 
+Master Boot Record is gone. As I couldn&#39;t really remember what steps I took, I realized after a lot of back and forth,
+that I don&#39;t even need a formatted disk, but a completely empty disk. I have a <code>.img</code> file, so a full snapshot of a 
+system, I suppose. The command to erase the disk:</p>
+<pre><code class="lang-bash">sudo diskutil partitionDisk /dev/disk2 1 MBR &quot;Free Space&quot; &quot;%noformat%&quot; 100%
 </code></pre>
-<p>Using the <code>/dev/rdisk2s1</code> is a lot better than <code>/dev/disk2s1</code> as it uses the &quot;raw&quot; disk if I remember correctly. If you 
-don&#39;t use <code>r</code> before the disk/partition name, you will have to wait a LOT longer until writing to it finishes. I 
-wouldn&#39;t want to waste so much time. It still takes a few minutes but in my memory, it took an hour or so not using <code>r</code>.</p>
+<p>This resulted in a <code>diskutil list</code> entry for it like this:</p>
+<pre><code>/dev/disk2 (internal, physical):
+   #:                       TYPE NAME                    SIZE       IDENTIFIER
+   0:                                                   *31.9 GB    disk2
+</code></pre><p>After that, I could put the image on the SD card as before.</p>
+</blockquote>
+<p>To put the image file on the SD card, I will use this command:</p>
+<pre><code class="lang-bash">sudo dd if=/Users/joern/Downloads/sd-image-armv6l-linux.img of=/dev/rdisk2 bs=1m conv=sync
+</code></pre>
+<p><code>bs=1m</code> makes it a lot faster. <code>conv=sync</code> is set in the official docs as well, so I&#39;ve included it here even though I 
+don&#39;t really know what this does. It also should work with <code>/dev/disk2</code>, but that would also be slower.</p>
+<blockquote>
+<p><strong>Update:</strong> So to recap, I&#39;m using a <code>.img</code> file here, which includes its own partition table etc. I need to write it
+on the whole disk, not on a single partition. If I had a <code>.iso</code> file, I should probably have a look and partition the
+disk myself before writing it on the bootable partition I just created.</p>
+<p>As a heads-up, the <code>diskutil list</code> output after writing the <code>.img</code> yields:</p>
+<pre><code>/dev/disk2 (internal, physical):
+   #:                       TYPE NAME                    SIZE       IDENTIFIER
+   0:     FDisk_partition_scheme                        *31.9 GB    disk2
+   1:                 DOS_FAT_32 NIXOS_BOOT              125.8 MB   disk2s1
+   2:                      Linux                         1.8 GB     disk2s2
+</code></pre><p>...and my RaspberryPi boots into nixos with it! :)</p>
+</blockquote>
 <h2 id="thinking-about-testing-the-sd-card-on-the-pi">Thinking about testing the SD card on the Pi</h2>
 <p>Okay, so the SD card should be set up after the command finished. I have an ethernet cable connected to the Pi and a 
 DHCP server running on the network. I really hope it just starts up and I have the possibility to connect to it 
