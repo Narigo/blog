@@ -187,7 +187,7 @@ on it. At least I guess from the output of `fdisk -l`, I think it should be okay
 Since I could not find a `hardware-configuration.nix` file in `/etx/nixos/`, I guess I need to start with the 
 installation using `nixos-generate-config`. This worked out and I could even reboot the Pi with it still having that 
 newly created file. `sshd` did not come up though, even when I tried `systemctl enable sshd` - it looks like it does not
-want to be enabled by default and I guess this is actually wanted that it doesn't  always start up. I should have a look
+want to be enabled by default and I guess this is actually wanted that it doesn't always start up. I should have a look
 into that later as my cool "switch source" setup is still intact and I just need the keyboard for opening up the remote
 login whenever I reboot. That's okay for me right now. 
 
