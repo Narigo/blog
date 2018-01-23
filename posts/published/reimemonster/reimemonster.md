@@ -1,6 +1,6 @@
 # The Reimemonster library
 
-A while ago, I started working on a small library called "[reimemonster](https://github.com/Narigo/reimemonster)". As I
+A while ago, I started working on a small library called "[Reimemonster](https://github.com/Narigo/reimemonster)". As I
 like writing small personal poems for family and friends on birthday or congratulation cards, most of the time I do it
 in this fashion:
 
@@ -22,12 +22,12 @@ get something usable for me that helps me speeding this up. Another part I had i
 ## Counting syllables
 
 I was sure that something already exists out there to help me with that. A web-service. Something easy to use. I 
-couldn't really find it and by now I think I know why.
+could not really find it and by now I think I know why.
 
 The first implementation idea was to use a tool to put hyphens in words and just split on them. It works quite well on 
 most of the words, but there are some which result in an incorrect number. Setting a hyphen is not splitting on 
 syllables really. The German word `oder` is a great example for this. You cannot split this word with a hyphen but 
-reading it out loud reveals two syllables: `o • der`. Another example would be `Ameise` which should be splitted into 
+reading it out loud reveals two syllables: `o • der`. Another example would be `Ameise` which should be split into 
 `Amei- se` but actually has three syllables: `A • mei • se`.
 
 In my tests I've used the [hyphen](https://github.com/ytiurin/hyphen) module to check how it works out. Most of the 
@@ -39,7 +39,7 @@ another approach. That new approach is quite simple: Count all occurrences of on
 When I find exceptions, I've added them by splitting on these kind of exceptions before counting this. This actually 
 yielded better results than expected, so I kept going further in this direction.
 
-The biggest problem I had with this is that I couldn't "show" the syllables / where it splits.
+The biggest problem I had with this is that I could not "show" the syllables / where it splits.
 
 ## Finding rhymes
 
@@ -57,8 +57,12 @@ If I would try to make this better, I would have a look into phonetic word lists
 ## Demo
 
 I've created a little demo page inside of the repository that can be run when doing a `npm run demo`. This will start up
-a small HTTP server via Python. Most probably I will put that page online somewhere and remove the demo server from the
-module.
+a small HTTP server via Python.
+
+Actually, in the meantime I've decided to put it on GitHub pages itself. The demo is based on modules and a web worker
+for finding rhymes with the `findRhyme` function. As web workers are not readily available in browsers yet, I've used
+Rollup to build a bundle from the worker JavaScript source to find rhymes. Use `npm run build-demo` to update the
+`findRhyme` worker and give [the Reimemonster demo page](https://narigo.github.io/reimemonster/) a spin yourself.
 
 ## Conclusion
 
