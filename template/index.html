@@ -16,7 +16,7 @@
   </nav>
 </header>
 <ol>
-  ${posts.map(post => `<li><a href="${util.link(post)}">${post.title}</a></li>`).join("\n")}
+${posts.map(post => `  <li><a href="${util.link(post)}">${post.title}</a></li>`).sort().join("\n")}
 </ol>
 <footer>
   ~
