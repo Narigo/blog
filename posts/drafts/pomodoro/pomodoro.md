@@ -5,7 +5,7 @@ TL;DR: Add this to your `~/.bash_profile` file.
 ```bash
 POMODORO_TIME=25
 POMODORO_BREAK=5
-alias pomodoro="while true; do osascript -e 'display notification \"Pomodoro time\" with title \"POMODORO\" sound name \"default\"' && echo -n 'Pomodoro time - bis ' && date -v+$((${POMODORO_TIME}))M '+%H:%M:%S' && sleep $((${POMODORO_TIME}*60)) && osascript -e 'display notification \"Break time\" with title \"POMODORO\" sound name \"default\"' && echo -n 'Break time - bis ' && date -v+$((${POMODORO_BREAK}))M '+%H:%M:%S' && sleep $((${POMODORO_BREAK}*60)); done"
+alias pomodoro="while true; do osascript -e 'display notification \"Pomodoro WORK until `date -v+$((${POMODORO_TIME}))M '+%H:%M:%S'`\" with title \"POMODORO\" sound name \"default\"' && echo -n 'Pomodoro WORK until ' && date -v+$((${POMODORO_TIME}))M '+%H:%M:%S' && sleep $((${POMODORO_TIME}*60)) && osascript -e 'display notification \"Break time until `date -v+$((${POMODORO_BREAK}))M '+%H:%M:%S'`\" with title \"BREAK\" sound name \"default\"' && echo -n 'Break time until ' && date -v+$((${POMODORO_BREAK}))M '+%H:%M:%S' && sleep $((${POMODORO_BREAK}*60)); done"
 ```
 
 ## Pomodoro timer
@@ -50,4 +50,12 @@ get to see the time when the next break or productive work session should begin 
 
 In my creative chaos of various open terminal windows and tabs, this already helped me quite a bit to get my focus on a
 specific task. Even this article was written while using this script.
- 
+
+## Future improvements
+
+As future improvement, I could imagine adding an integration to some time tracking tool. As we are already tracking 
+time, this could periodically update something to track time.
+
+* `trap` could be used to "cleanup" and state the time passed since starting the script.
+* An integration to some kind of time tracking tool would be nice in form of another script which could be called
+  periodically with provided parameters.
