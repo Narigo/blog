@@ -53,8 +53,8 @@ specific task. Even this article was written while using this script.
 
 ## Future improvements
 
-As future improvement, I could imagine adding an integration to some time tracking tool. As we are already tracking 
-time, this could periodically update something to track time.
+There are a few improvements that I can see right away. Moving to a bash script instead of an alias, it could get some
+further features.
 
 * `trap` could be used to "cleanup" and state the time passed since starting the script.
 * An integration to some kind of time tracking tool would be nice in form of another script which could be called

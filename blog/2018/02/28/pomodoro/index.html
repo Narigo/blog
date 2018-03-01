@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Pomodoro timer as alias</title>
+  <link rel="stylesheet" href="../../../../styles.css" />
+</head>
+<body>
+<header>
+  <nav class="main">
+    <a href="../../../../">Main</a>
+  </nav>
+</header>
+<article>
+  <h2>Pomodoro timer as alias</h2>
+  <div class="date">28.02.2018<span class="last-edited-on">last edit on 01.03.2018</span></div>
+  <div class="article"><h1 id="simple-pomodoro-timer-for-mac-osx-as-bash-alias">Simple pomodoro timer for Mac OSX as bash alias</h1>
+<p>TL;DR: Add this to your <code>~/.bash_profile</code> file.</p>
+<pre><code class="lang-bash">POMODORO_TIME=25
+POMODORO_BREAK=5
+alias pomodoro=&quot;while true; do osascript -e &#39;display notification \&quot;Pomodoro WORK until `date -v+$((${POMODORO_TIME}))M &#39;+%H:%M:%S&#39;`\&quot; with title \&quot;POMODORO\&quot; sound name \&quot;default\&quot;&#39; &amp;&amp; echo -n &#39;Pomodoro WORK until &#39; &amp;&amp; date -v+$((${POMODORO_TIME}))M &#39;+%H:%M:%S&#39; &amp;&amp; sleep $((${POMODORO_TIME}*60)) &amp;&amp; osascript -e &#39;display notification \&quot;Break time until `date -v+$((${POMODORO_BREAK}))M &#39;+%H:%M:%S&#39;`\&quot; with title \&quot;BREAK\&quot; sound name \&quot;default\&quot;&#39; &amp;&amp; echo -n &#39;Break time until &#39; &amp;&amp; date -v+$((${POMODORO_BREAK}))M &#39;+%H:%M:%S&#39; &amp;&amp; sleep $((${POMODORO_BREAK}*60)); done&quot;
+</code></pre>
+<h2 id="pomodoro-timer">Pomodoro timer</h2>
+<p>The pomodoro technique is usually a set of 25 minutes doing productive work and a 5 minute break afterwards. You repeat
+these two actions until the task you want to focus on is done. I like to use a pomodoro timer when I have time to focus
+on a single task. Getting a new coffee or stretching during the break helps me to get fresh ideas if I hit an unexpected
+or not yet anticipated issue. </p>
+<p>There are a lot of resources and tools floating around that want to install and do a lot for you, even if all you want 
+is a notification when you should start working again or when you should take a short break. Hence, (and for fun) I&#39;ve
+decided to build my own little bash script, that I can run in a terminal.</p>
+<p>Sure, it&#39;s not as fancy as other apps, but at least it&#39;s just using simple shell commands and the sleep timer. It does 
+nothing most of the time and just informs me when it&#39;s time to move on to the break or get on the work again.</p>
+<h2 id="code-and-explanation">Code and explanation</h2>
+<p>The first try was the following:</p>
+<pre><code class="lang-bash">while true; do echo -n &#39;Pomodoro time&#39; &amp;&amp; sleep $((25*60)) &amp;&amp; echo -n &#39;Break time&#39; &amp;&amp; sleep $((5*60)); done
+</code></pre>
+<p>While this works through echo, I would need to have the terminal window always in my view, so as soon as it toggles the
+time, I&#39;d need to check the current time and calculate when the next stop is due. The next step is to do this 
+calculation for me, using the date command:</p>
+<pre><code class="lang-bash">while true; do echo -n &#39;Pomodoro time - until &#39; &amp;&amp; date -v+25M &#39;+%H:%M:%S&#39; &amp;&amp; sleep $((25*60)) &amp;&amp; echo -n &#39;Break time - until &#39; &amp;&amp; date -v+5M &#39;+%H:%M:%S&#39; &amp;&amp; sleep $((5*60)); done
+</code></pre>
+<p>Great - I can now see the times, but still, it does not flash or notify me as I don&#39;t have a bell ringing. On a Mac, you
+can use the <code>osascript</code> command to display a native notification. So the third revision came to be:</p>
+<pre><code class="lang-bash">while true; do osascript -e &#39;display notification &quot;Pomodoro time until &#39;`date -v+25M &#39;+%H:%M:%S&#39;`&#39;&quot; with title &quot;POMODORO&quot; sound name &quot;default&quot;&#39; &amp;&amp; echo -n &#39;Pomodoro time - until &#39; &amp;&amp; date -v+25M &#39;+%H:%M:%S&#39; &amp;&amp; sleep $((25*60)) &amp;&amp; osascript -e &#39;display notification &quot;Break time&quot; with title &quot;POMODORO&quot; sound name &quot;default&quot;&#39; &amp;&amp; echo -n &#39;Break time - until &#39; &amp;&amp; date -v+5M &#39;+%H:%M:%S&#39; &amp;&amp; sleep $((5*60)); done
+</code></pre>
+<p>The last version shows a nice notification, rings a bell that I can hear while listening to concentration music and I 
+get to see the time when the next break or productive work session should begin at a glance.</p>
+<p>In my creative chaos of various open terminal windows and tabs, this already helped me quite a bit to get my focus on a
+specific task. Even this article was written while using this script.</p>
+<h2 id="future-improvements">Future improvements</h2>
+<p>There are a few improvements that I can see right away. Moving to a bash script instead of an alias, it could get some
+further features.</p>
+<ul>
+<li><code>trap</code> could be used to &quot;cleanup&quot; and state the time passed since starting the script.</li>
+<li>An integration to some kind of time tracking tool would be nice in form of another script which could be called
+periodically with provided parameters.</li>
+</ul>
+</div>
+</article>
+<footer>
+  ~
+</footer>
+</body>
+</html>
