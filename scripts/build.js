@@ -3,6 +3,8 @@ const { promisify } = require("util");
 const { buildArticle } = require("./util/building");
 const util = require("./util/util");
 const config = require("../config");
+const Vue = require("vue");
+const renderer = require("vue-server-renderer").createRenderer();
 
 const readdir = promisify(fs.readdir);
 const readFile = promisify(fs.readFile);
@@ -18,13 +20,16 @@ async function run() {
 }
 
 async function buildIndex(posts) {
-  const template = (await readFile(`${config.templateDirectory}/index.html`)).toString();
-  const index = makeIndex(posts, util, template);
-  return writeFile(`${config.blogDirectory}/index.html`, index);
-}
-
-function makeIndex(posts, util, template) {
-  return eval("`" + template + "`");
+  const template = (await readFile(`${config.templateDirectory}/index.vue`)).toString();
+  const app = new Vue({
+    data: {
+      posts
+    },
+    methods: util,
+    template
+  });
+  const html = await renderer.renderToString(app);
+  return writeFile(`${config.blogDirectory}/index.html`, html);
 }
 
 async function copyAssets() {
