@@ -18,7 +18,7 @@ async function run() {
 }
 
 async function buildIndex(posts) {
-  const template = await readFile(`${config.templateDirectory}/index.html`);
+  const template = (await readFile(`${config.templateDirectory}/index.html`)).toString();
   const index = makeIndex(posts, util, template);
   return writeFile(`${config.blogDirectory}/index.html`, index);
 }
