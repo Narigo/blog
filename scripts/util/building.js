@@ -2,6 +2,8 @@ const fs = require("fs");
 const { promisify } = require("util");
 const marked = require("marked");
 const util = require("./util");
+const Vue = require("vue");
+const renderer = require("vue-server-renderer").createRenderer();
 
 const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
@@ -66,21 +68,23 @@ async function getContentOfPost(directory, name) {
   return marked(content);
 }
 
-function makeArticle(article, util, template) {
-  return eval("`" + template + "`");
-}
-
 async function writePost({ post, day, month, year, config }) {
   const nf = n => (n < 10 ? "0" : "") + n;
   const resultPath = `${year}/${nf(month)}/${nf(day)}/${post.name}`;
 
-  let template = (await readFile(`${config.templateDirectory}/article.html`)).toString();
-  const article = { ...post.meta, ...post };
-  template = makeArticle(article, util, template);
+  const template = (await readFile(`${config.templateDirectory}/article.vue`)).toString();
+  const app = new Vue({
+    data: {
+      article: post
+    },
+    methods: util,
+    template
+  });
+  const html = await renderer.renderToString(app);
 
   console.log(`Publishing post ${post.name} into ${resultPath}`);
   await mkdirp(config.blogDirectory, resultPath);
-  await promisify(fs.writeFile)(`${config.blogDirectory}/${resultPath}/index.html`, template);
+  await promisify(fs.writeFile)(`${config.blogDirectory}/${resultPath}/index.html`, html);
 }
 
 async function mkdirp(workingDir, path) {
