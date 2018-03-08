@@ -24,7 +24,7 @@ async function buildArticle(post, config) {
   const { day, month, year } = util.getDateFromPost(metaArticle, lastEditedOn);
   const meta = { ...metaArticle, lastEditedOn };
 
-  console.log(`Building post ${post.name}`, meta);
+  console.log(`Building post ${post.name}`);
   await writePost({ post: { ...meta, name: post.name, content: html }, day, month, year, config });
 }
 
