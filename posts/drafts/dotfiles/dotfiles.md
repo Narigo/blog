@@ -18,15 +18,21 @@ For now, my modules have simple "commands" which can be used. They can either co
 configuration files like `.gitconfig` and through the latter I can split aliases, setting of paths and adding scripted 
 logic into separate files. Maybe this will help me to reuse parts of it cross-platform later.
 
-### Copy-Example
+**TODO:** Explain `.settings-*` files.
 
-This mode of operaions copies all existing files into a simple directory, passed into the directory.
+### Copying files into a directory
+
+This mode of operation copies all existing files into a simple directory, passed into the directory.
+
+**TODO:** Document which settings is used to achieve this.
 
 ### Concatenation-Example
 
 See the `shell` module as an example. It takes all files in the modules sub-directories and merges them into the single
 file called `.bash_profile`. As the environment settings, alias declarations and scripts are split accross multiple 
 files, It could be possible to reuse parts of it or just remove parts I hardly ever used.  
+
+**TODO:** Document which setting is used to achieve this.
 
 ## Extra settings
 
@@ -37,6 +43,6 @@ settings file is to set up user specific stuff. For me, it sets git user options
 
 ## Conclusion
 
-Creating a repository and thinking more about automating my own workflows really help to get repetitive  things done 
-much faster. Working on it also leads to thinking more into a direction of DevOps: Scripting all of my configuration to
+Creating a repository and thinking more about automating my own workflow really help to get repetitive things done much 
+faster. Working on it also leads to thinking more into a direction of DevOps: Scripting all of my configuration to
 prevent myself from making mistakes setting up a new machine.
