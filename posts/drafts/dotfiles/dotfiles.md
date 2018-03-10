@@ -18,21 +18,17 @@ For now, my modules have simple "commands" which can be used. They can either co
 configuration files like `.gitconfig` and through the latter I can split aliases, setting of paths and adding scripted 
 logic into separate files. Maybe this will help me to reuse parts of it cross-platform later.
 
-**TODO:** Explain `.settings-*` files.
+Right now, I've set up `.settings-macos` files in the two first modules, namely `git` and `shell`. In the 
+`.settings-macos` I can either put a line like `platform_file=<file_to_concatenate_into>` or a line 
+`copy_files_to=<directory_to_copy_into>`. If the script finds a `platform_file`, it tries to concatenate all files in a
+single file. If it finds a `copy_files_to`, it will simply copy all files into that directory.
 
-### Copying files into a directory
+For example, to recreate git settings, you need to put a `.gitconfig` file into your `$HOME` directory. Hence the 
+`.settings-macos` file contains `copy_files_to=$HOME`. The script will evaluate the `.settings-*` files, so keep that in
+mind when doing anything inside of them.
 
-This mode of operation copies all existing files into a simple directory, passed into the directory.
-
-**TODO:** Document which settings is used to achieve this.
-
-### Concatenation-Example
-
-See the `shell` module as an example. It takes all files in the modules sub-directories and merges them into the single
-file called `.bash_profile`. As the environment settings, alias declarations and scripts are split accross multiple 
-files, It could be possible to reuse parts of it or just remove parts I hardly ever used.  
-
-**TODO:** Document which setting is used to achieve this.
+The shell module on the other hand, needs to concatenate multiple files into the `.bash_profile`. Usually, the 
+`.settings-macos` should contain `platform_file=$HOME/.bash_profile`.
 
 ## Extra settings
 
