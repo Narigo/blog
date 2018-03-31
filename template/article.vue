@@ -23,7 +23,7 @@
   <div class="article" v-html="article.content"></div>
 </article>
 <footer>
-  ~
+  &copy; 2018 Jörn Bernhardt
 </footer>
 </body>
 </html>

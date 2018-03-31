@@ -8,3 +8,7 @@ html,body {
 header, footer, article {
   padding: 25px;
 }
+
+footer {
+  font-size: 10pt;
+}

@@ -19,7 +19,7 @@
   <li v-for="post in posts.sort((a, b) => a.createdAt < b.createdAt)"><a :href="link(post)">{{ post.title }}</a></li>
 </ol>
 <footer>
-  ~
+  &copy; 2018 Jörn Bernhardt
 </footer>
 </body>
 </html>
