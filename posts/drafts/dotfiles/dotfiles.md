@@ -2,14 +2,17 @@
 
 Setting up servers, computers and other things made myself wonder about how I could automate or optimize my own 
 workflows. There are a lot of great examples what aliases people set up for themselves. I've wondered if I could do the
-same for myself and keep it modular for multiple operating systems as well. The project that I have been tinkering on is
-simply called [dotfiles](https://github.com/Narigo/dotfiles) and is largely based on the input of great resources I have
-found via [dotfiles.github.io](https://dotfiles.github.io).
+same for myself and keep it modular for multiple operating systems as well. The project that I have been tinkering with
+is simply called [dotfiles](https://github.com/Narigo/dotfiles) and is largely based on the input of great resources I 
+have found via [dotfiles.github.io](https://dotfiles.github.io).
 
 In my case, I've been looking to get a backup for my regular dotfiles, which were not really complex when I started. 
 While working on it, I've been digging into a lot of settings that help me automate and optimize commands and aliases. 
 As I was concerned about overwriting all my configuration files, I've added a `backup` folder. Existing configuration
 files get a backup there before overwriting them now. I don't want to make that mistake twice...
+
+There is also a dry-run option. Doing `. install.sh -d`  will generate all files in the `.dry-run/` directory, so you 
+can see what the resulting files will look like.
 
 ## How to write a module
 
