@@ -13,6 +13,7 @@ const stat = promisify(fs.stat);
 module.exports = {
   buildArticle,
   getDirectoryOfPost,
+  mkdirp,
   publishDraft
 };
 
@@ -87,7 +88,7 @@ async function writePost({ post, day, month, year, config }) {
   await promisify(fs.writeFile)(`${config.blogDirectory}/${resultPath}/index.html`, html);
 }
 
-async function mkdirp(workingDir, path) {
+async function mkdirp(workingDir, path = "") {
   await path.split("/").reduce(async (acc, p) => {
     const ps = await acc;
     return await mkdir(`${ps}/${p}`);

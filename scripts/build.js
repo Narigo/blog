@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { promisify } = require("util");
-const { buildArticle } = require("./util/building");
+const { buildArticle, mkdirp } = require("./util/building");
 const util = require("./util/util");
 const config = require("../config");
 const Vue = require("vue");
@@ -13,6 +13,7 @@ const writeFile = promisify(fs.writeFile);
 run().catch(e => console.error(e));
 
 async function run() {
+  await mkdirp(config.blogDirectory);
   await copyAssets();
   const publishedPosts = await getPublishedPosts();
   await buildIndex(publishedPosts.map(post => ({ ...post.meta, ...post })));
