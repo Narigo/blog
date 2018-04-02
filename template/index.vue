@@ -15,8 +15,11 @@
     <a href="./">Main</a>
   </nav>
 </header>
-<ol>
-  <li v-for="post in posts.sort((a, b) => a.createdAt < b.createdAt)"><span class="date">{{ datefmt(post.createdAt) }}</span> - <a :href="link(post)">{{ post.title }}</a></li>
+<ol class="articles">
+  <li v-for="post in posts.sort((a, b) => a.createdAt < b.createdAt)" class="article">
+    <div class="date">{{ datefmt(post.createdAt) }}</div>
+    <div class="title"><a :href="link(post)">{{ post.title }}</a></div>
+  </li>
 </ol>
 <footer>
   &copy; 2018 Jörn Bernhardt
