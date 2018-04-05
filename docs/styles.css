@@ -1,7 +1,13 @@
+:root {
+  --main-background: #eee;
+  --highlight-background: #eeeef6;
+  --separator-color: #ddd;
+}
+
 html,body {
   margin: 0;
   padding: 0;
-  background: #eee;
+  background: var(--main-background);
   font-family: sans-serif;
 }
 
@@ -16,8 +22,8 @@ header, footer, article {
 }
 
 .articles .article {
-  border: 1px solid #ddd;
-  background-color: #eef;
+  border: 1px solid var(--separator-color);
+  background-color: var(--highlight-background);
   font-size: 16pt;
   padding: 25px;
   margin: 25px;
