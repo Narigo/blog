@@ -2,17 +2,28 @@
   --main-background: #eee;
   --highlight-background: #eeeef6;
   --separator-color: #ddd;
+  --standard-font: sans-serif;
+  --headline-font: sans-serif;
+  --text-font: serif;
 }
 
 html,body {
   margin: 0;
   padding: 0;
   background: var(--main-background);
-  font-family: sans-serif;
+  font-family: var(--standard-font);
 }
 
 header, footer, article {
   padding: 25px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--headline-font);
+}
+
+article p {
+  font-family: var(--text-font);
 }
 
 .articles {
