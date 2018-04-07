@@ -12,6 +12,7 @@ const stat = promisify(fs.stat);
 
 module.exports = {
   buildArticle,
+  createDraft,
   getDirectoryOfPost,
   mkdirp,
   publishDraft
@@ -27,6 +28,25 @@ async function buildArticle(post, config) {
 
   console.log(`Building post ${post.name}`);
   await writePost({ post: { ...meta, name: post.name, content: html }, day, month, year, config });
+}
+
+async function createDraft(name, title, config) {
+  // 1. create draft dir
+  // 2. create meta file
+  // 3. create markdown file
+  const draftDir = `${config.draftsDirectory}/${name}`;
+  await mkdirp(draftDir);
+
+  const draftMetaFile = `${config.draftsDirectory}/${name}/${name}.json`;
+  const draftMeta = await readFile(draftMetaFile)
+    .then(c => JSON.parse(c.toString()))
+    .catch(e => (e.code === "ENOENT" ? createMeta(title) : Promise.reject(e)));
+  draftMeta.title = title || draftMeta.title;
+  await writeFile(draftMetaFile, JSON.stringify(draftMeta));
+
+  const draftMarkdownFile = `${config.draftsDirectory}/${name}/${name}.md`;
+  await stat(draftMarkdownFile)
+    .catch(e => (e.code === "ENOENT" ? writeFile(draftMarkdownFile, createMarkdown(title)) : Promise.reject(e)));
 }
 
 async function getDirectoryOfPost(name, config) {
@@ -99,4 +119,16 @@ async function mkdir(path) {
   return promisify(fs.mkdir)(path)
     .then(() => path)
     .catch(err => (err.code === "EEXIST" ? Promise.resolve(path) : Promise.reject(err)));
+}
+
+function createMeta(title) {
+  const createdAt = new Date();
+  return {
+    createdAt,
+    title
+  };
+}
+
+function createMarkdown(title) {
+  return `# ${title}\n\n`;
 }
