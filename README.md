@@ -7,3 +7,21 @@ a simpler structure, namely `drafts/<title-slug>.md`. Most probably I will write
 from the drafts. Should be added as a blog post though.
 
 I should put ideas for new posts into the issues in this repository I guess.
+
+## Commands
+
+### Create new draft
+
+```
+npm run draft <name> <title>
+```
+
+This creates a new draft with the internal id of `<name>` and a title `<title>`.
+
+### Publish a post
+
+```
+npm run publish <name>
+```
+
+This publishes a draft or updates an already published post with the name `<name>`.
