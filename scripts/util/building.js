@@ -42,7 +42,7 @@ async function createDraft(name, title, config) {
     .then(c => JSON.parse(c.toString()))
     .catch(e => (e.code === "ENOENT" ? createMeta(title) : Promise.reject(e)));
   draftMeta.title = title || draftMeta.title;
-  await writeFile(draftMetaFile, JSON.stringify(draftMeta));
+  await writeFile(draftMetaFile, JSON.stringify(draftMeta, null, 2));
 
   const draftMarkdownFile = `${config.draftsDirectory}/${name}/${name}.md`;
   await stat(draftMarkdownFile)
@@ -130,5 +130,5 @@ function createMeta(title) {
 }
 
 function createMarkdown(title) {
-  return `# ${title}\n\n`;
+  return `# ${title}\n\n\n`;
 }
