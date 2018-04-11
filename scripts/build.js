@@ -41,17 +41,13 @@ async function copyAssets(directory = INITIAL_ASSETS_DIR) {
   await files.reduce(async (acc, file) => {
     await acc;
     const filePath = `${directory}/${file}`;
-    console.log("looking at", filePath);
     const stats = await statFile(filePath);
     const toPath = `${config.blogDirectory}/${filePath.slice(INITIAL_ASSETS_DIR.length)}`;
     if (stats.isDirectory()) {
-      console.log("creating dir", toPath);
       await mkdirp(toPath);
       await copyAssets(filePath);
     } else {
-      console.log("copying");
       await copyFile(filePath, toPath);
-      console.log("copied!");
     }
   }, Promise.resolve());
 }
@@ -60,14 +56,10 @@ function copyFile(from, to) {
   const fromStream = fs.createReadStream(from);
   const toStream = fs.createWriteStream(to);
   return new Promise((resolve, reject) => {
-    console.log("from", from);
-    console.log("to", to);
     const piped = fromStream.pipe(toStream);
     piped.on("error", reject);
     piped.on("close", resolve);
-  })
-    .then(() => console.log("copied...."))
-    .catch(e => console.log("errored!", e));
+  });
 }
 
 async function getPublishedPosts() {
