@@ -113,11 +113,16 @@
        url('./fonts/pt-sans-v9-latin-ext_latin-700italic.svg#PTSans') format('svg'); /* Legacy iOS */
 }
 
-html,body {
+html, body {
   margin: 0;
   padding: 0;
   background: var(--main-background);
   font-family: var(--standard-font);
+}
+
+body {
+  margin: 0 auto;
+  max-width: 60em;
 }
 
 header, footer, article {
