@@ -10,17 +10,27 @@
 </head>
 <body>
 <header>
-  <h1>Blog</h1>
+  <h1>Random thoughts</h1>
   <nav class="main">
-    <a href="./">Main</a>
+    <ul>
+      <li><a href="./">Main</a></li>
+      <li><a href="./imprint.html">Imprint</a></li>
+    </ul>
   </nav>
 </header>
-<ol class="articles">
-  <li v-for="post in posts.sort((a, b) => a.createdAt < b.createdAt)" class="article">
-    <div class="date">{{ datefmt(post.createdAt) }}</div>
-    <div class="title"><a :href="link(post)">{{ post.title }}</a></div>
-  </li>
-</ol>
+<section class="intro">
+  <h2>Hi there!</h2>
+  <p>Here are some random thoughts and things I've done and written about. I'll try to do one post each month and practice my writing.<br/>
+  <span class="author">Joern</span></p>
+</section>
+<section class="index">
+  <ol class="articles">
+    <li v-for="post in posts.sort((a, b) => a.createdAt < b.createdAt)" class="article">
+      <div class="date">{{ datefmt(post.createdAt) }}</div>
+      <div class="title"><a :href="link(post)">{{ post.title }}</a></div>
+    </li>
+  </ol>
+</section>
 <footer>
   &copy; 2018 Jörn Bernhardt
 </footer>

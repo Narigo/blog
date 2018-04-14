@@ -10,8 +10,12 @@
 </head>
 <body>
 <header>
+  <h1>Random thoughts</h1>
   <nav class="main">
-    <a href="../../../../">Main</a>
+    <ul>
+      <li><a href="../../../../">Main</a></li>
+      <li><a href="../../../../imprint.html">Imprint</a></li>
+    </ul>
   </nav>
 </header>
 <article>
