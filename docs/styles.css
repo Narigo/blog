@@ -146,13 +146,15 @@ article p {
 }
 
 .articles .article {
-  border: 1px solid var(--separator-color);
-  background-color: var(--highlight-background);
+  border-top: 5px solid var(--separator-color);
   font-size: 16pt;
   padding: 25px;
   margin: 25px;
   position: relative;
-  box-shadow: 0px 10px 5px 0px #ccc;
+}
+
+.articles .article:first-child {
+  border-top: 0;
 }
 
 .articles .article .date {
