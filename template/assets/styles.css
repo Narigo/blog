@@ -170,6 +170,10 @@ article p {
   font-family: var(--headline-font);
 }
 
+pre {
+  overflow: auto;
+}
+
 footer {
   font-size: 10pt;
 }
