@@ -16,17 +16,10 @@ the pointer and randomly generating coordinates around it in a circle. The farth
 smaller the generated circles will be drawn. Every animation frame, it will generate new random coordinates for as long
 as the pointer is pressed on the canvas. This results in a cool effect, which is best shown in pictures:
 
-1. Pressed for just one frame:
+![Spray pressed for just one frame](01_one_frame.png) | ![Spray pressed for a short time](02_few_frames.png) | ![Spray pressed for a longer time](03_many_frames.png)
+:--:|:--:|:--:
+Pressed for just one frame | Pressed for a short time (a few frames) | Pressed for a long time
 
-![Spray pressed for just one frame](01_one_frame.png)
-
-2. Pressed for a short time (a few frames):
-
-![Spray pressed for a short time](02_few_frames.png)
-
-3. Pressed for a long time:
-
-![Spray pressed for a longer time](03_many_frames.png)
 
 In other applications, the spray can tool works similar and is done. But for us, we still need to generate the drops to
 make the tool behave like a real world spray can.
