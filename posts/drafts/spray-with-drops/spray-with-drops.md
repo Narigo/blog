@@ -48,6 +48,8 @@ This way, the calculations can be tested if they are done correctly. In addition
 mechanisms. For example not only a "drawing on canvas" but also using PixiJS instead of native canvas drawing or even
 creating an SVG from the shapes that should be drawn while pressing the pointer.
 
-In the [dropping-spray code repository](https://github.com/Narigo/dropping-spray) you can have a look into the real
-code and how to use it. There is also an [online demo of a dropping spray](https://narigo.github.io/dropping-spray/)
+In the [dropping-spray code repository](https://github.com/Narigo/dropping-spray) you can have a look into the final
+code and how to use it. There is also [an online demo of the dropping spray](https://narigo.github.io/dropping-spray/)
 available.
+
+![Example of the final spray](example.gif)
