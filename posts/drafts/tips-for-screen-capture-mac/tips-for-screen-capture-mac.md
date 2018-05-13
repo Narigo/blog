@@ -52,3 +52,11 @@ ffmpeg -i input.gif -filter:v "setpts=0.125*PTS" -r 60 output.gif
 
 This removes some frames instead of making the "show next image" faster but the result worked for me. Having a higher
 value for the framerate (120 instead of 60) did not help.
+
+You can also use `ffmpeg` directly to convert `.mov` to `.gif` instead of using an online converter. Use the command:
+
+```
+ffmpeg -i input.mov output.gif
+```
+
+Similar options as above can be used.
