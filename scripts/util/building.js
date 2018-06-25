@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fs = require("fs-extra");
 const { promisify } = require("util");
 const marked = require("marked");
 const util = require("./util");
@@ -27,7 +27,14 @@ async function buildArticle(post, config) {
   const meta = { ...metaArticle, lastEditedOn };
 
   console.log(`Building post ${post.name}`);
-  await writePost({ post: { ...meta, name: post.name, content: html }, day, month, year, config });
+  await writePost({
+    post: { ...meta, name: post.name, content: html },
+    day,
+    month,
+    year,
+    config,
+    directory: postDirectory
+  });
 }
 
 async function createDraft(name, title, config) {
@@ -45,8 +52,9 @@ async function createDraft(name, title, config) {
   await writeFile(draftMetaFile, JSON.stringify(draftMeta, null, 2));
 
   const draftMarkdownFile = `${config.draftsDirectory}/${name}/${name}.md`;
-  await stat(draftMarkdownFile)
-    .catch(e => (e.code === "ENOENT" ? writeFile(draftMarkdownFile, createMarkdown(title)) : Promise.reject(e)));
+  await stat(draftMarkdownFile).catch(
+    e => (e.code === "ENOENT" ? writeFile(draftMarkdownFile, createMarkdown(title)) : Promise.reject(e))
+  );
 }
 
 async function getDirectoryOfPost(name, config) {
@@ -69,7 +77,7 @@ async function publishDraft(name, config) {
 
   console.log(`Updating draft ${name} meta-data.`);
   await writeFile(metaFile, `${JSON.stringify(meta, null, 2)}\n`);
-  await writePost({ post: { meta, name, content: html }, day, month, year, config });
+  await writePost({ post: { meta, name, content: html }, day, month, year, config, directory });
   await moveDraftToPost(name, config);
 }
 
@@ -89,7 +97,7 @@ async function getContentOfPost(directory, name) {
   return marked(content);
 }
 
-async function writePost({ post, day, month, year, config }) {
+async function writePost({ post, day, month, year, config, directory }) {
   const nf = n => (n < 10 ? "0" : "") + n;
   const resultPath = `${year}/${nf(month)}/${nf(day)}/${post.name}`;
 
@@ -105,7 +113,17 @@ async function writePost({ post, day, month, year, config }) {
 
   console.log(`Publishing post ${post.name} into ${resultPath}`);
   await mkdirp(config.blogDirectory, resultPath);
+  await copyAssets(directory, `${config.blogDirectory}/${resultPath}`, { name: post.name });
   await promisify(fs.writeFile)(`${config.blogDirectory}/${resultPath}/index.html`, html);
+}
+
+async function copyAssets(fromDir, toDir, { name }) {
+  fs.copy(fromDir, toDir, {
+    filter: file => {
+      const isPostOrMeta = file.endsWith(`${name}.json`) || file.endsWith(`${name}.md`);
+      return !isPostOrMeta;
+    }
+  });
 }
 
 async function mkdirp(workingDir, path = "") {
