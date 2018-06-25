@@ -1,0 +1,46 @@
+<html lang="en" data-server-rendered="true"><head><meta charset="UTF-8"> <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge"> <title></title> <link rel="stylesheet" href="../../../../styles.css"></head> <body><header><h1>Random thoughts</h1> <nav class="main"><ul><li><a href="../../../../">Main</a></li> <li><a href="../../../../imprint.html">Imprint</a></li></ul></nav></header> <article><h2></h2> <div class="data">
+    NaN.NaN.NaN
+    <!----></div> <div class="article"><h1 id="tips-for-capturing-and-annotating-your-screen-on-macos">Tips for capturing and annotating your screen on MacOS</h1>
+<p>When I started to use a Mac, I wasn&#39;t aware of some really nice features that I wasn&#39;t used to in the Windows or Linux
+world. Especially capturing (parts) of the screen to show a bug or a workflow wasn&#39;t something that could be done with
+preinstalled applications.</p>
+<p>I wish I knew some of these things earlier, so I&#39;m documenting and sharing them here.</p>
+<h2 id="taking-screenshots">Taking screenshots</h2>
+<p>Taking a screenshot is quite simple by using keyboard shortcuts. <code>Command + Shift + 3</code> will capture the whole screen
+and save the captured image on your desktop. <code>Command + Shift + 4</code> changes your cursor and lets you drag a rectangle on
+the part of the screen you want to capture. Use <code>Control + Command + Shift + &lt;3 or 4&gt;</code> to save the result of your
+screen grab into the clipboard.</p>
+<p>If the keyboard shortcuts won&#39;t work for you, you can also use the &quot;Preview&quot; application and use the &quot;Take Screenshot
+...&quot; item in the &quot;File&quot; menu.</p>
+<h2 id="record-the-screen">Record the screen</h2>
+<p>The QuickTimePlayer has powerful features for recording the screen. Open the app, select &quot;New Screen Recording&quot; (or
+press <code>Control + Command + N</code>). You can drag a rectangle to record only a part of your screen or press the big button
+in the middle of your screen to record the complete screen.</p>
+<h2 id="annotate-pictures-or-screenshots-">Annotate pictures (or screenshots)</h2>
+<p>The Preview application lets you annotate images and screenshots. To find this possibility, select the &quot;Show Markup
+Toolbar&quot; option. With these, you can draw bordered rectangles to highlight something, write text on the image or add
+lines and arrows. I think it&#39;s a bit strange that it creates the thing you select as a new layer without you &quot;dragging&quot;
+it on the screen, but you can move your selected option on a new layer without problems.</p>
+<h2 id="taking-a-screen-recording-with-a-video-capture-of-your-webcam">Taking a screen recording with a video capture of your webcam</h2>
+<p>When doing a movie recording with QuickTimePlayer and the starting the Screen Recording, the movie may get hidden below
+other windows. To keep the camera window on top of every other window, open the &quot;View&quot; menu and select the &quot;Float on
+Top&quot; option. If you turn on the internal microphone recording on the Screen Recording, you can record a video of you
+and the screen at the same time.</p>
+<h2 id="bonus-mov-to-animated-gif">Bonus: MOV to animated GIF</h2>
+<p>Embedding videos in commentaries or similar can be quite a hassle. It&#39;s usually much easier to embed animated GIFs
+instead. <a href="https://www.onlineconverter.com/mov-to-gif">Online MOV to GIF services</a> worked well for me, but if you are
+working on large files with a slow connection, you might want to check out this
+<a href="https://github.com/mortenjust/droptogif">open source video to GIF converter</a>.</p>
+<p>When using the online converter, the GIF animation came out pretty &quot;slow&quot; for me. Using <code>ffmpeg</code> helped me to make it
+faster by executing this command:</p>
+<pre><code>ffmpeg -i input.gif -filter:v &quot;setpts=0.125*PTS&quot; -r 60 output.gif
+</code></pre><p>This removes some frames instead of making the &quot;show next image&quot; faster but the result worked for me. You can try 
+different PTS (&quot;presentation time stamp&quot;) settings and different frame rates (<code>-r 60</code> means 60 frames per second as
+output).</p>
+<p>You can also use <code>ffmpeg</code> directly to convert <code>.mov</code> to <code>.gif</code> instead of using an online converter. Use the command:</p>
+<pre><code>ffmpeg -i input.mov output.gif
+</code></pre><p>It can take the options from above directly, so if the online converter did not work well for you, you can directly
+convert from <code>-i your.mov</code> via <code>&lt;options&gt;</code> to <code>output.gif</code>.</p>
+</div></article> <footer>
+  © 2018 Jörn Bernhardt
+</footer></body></html>
