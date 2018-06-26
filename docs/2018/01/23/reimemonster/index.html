@@ -1,7 +1,7 @@
 <html lang="en" data-server-rendered="true"><head><meta charset="UTF-8"> <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge"> <title>Reimemonster library</title> <link rel="stylesheet" href="../../../../styles.css"></head> <body><header><h1>Random thoughts</h1> <nav class="main"><ul><li><a href="../../../../">Main</a></li> <li><a href="../../../../imprint.html">Imprint</a></li></ul></nav></header> <article><h2>Reimemonster library</h2> <div class="data">
     23.01.2018
-    <!----></div> <div class="article"><h1 id="the-reimemonster-library">The Reimemonster library</h1>
-<p>A while ago, I started working on a small library called &quot;<a href="https://github.com/Narigo/reimemonster">Reimemonster</a>&quot;. As I
+    <!----></div> <div class="article"><h1 id="thereimemonsterlibrary">The Reimemonster library</h1>
+<p>A while ago, I started working on a small library called "<a href="https://github.com/Narigo/reimemonster">Reimemonster</a>". As I
 like writing small personal poems for family and friends on birthday or congratulation cards, most of the time I do it
 in this fashion:</p>
 <ol>
@@ -13,11 +13,11 @@ in this fashion:</p>
 <li>Repeat until the card is full / the poem is done.</li>
 </ol>
 <p>The nice thing about this approach is that abiding to this small set of rules usually makes the poem sound okay. At 
-least the feedback was more positive in relation to &quot;Congratulations to your XXX, wish you all the best&quot;-template texts.</p>
+least the feedback was more positive in relation to "Congratulations to your XXX, wish you all the best"-template texts.</p>
 <h2 id="motivation">Motivation</h2>
 <p>Counting of syllables takes up a lot of time in the described process. When starting to work on the library, I wanted to
-get something usable for me that helps me speeding this up. Another part I had in mind was &quot;finding a word that rhymes&quot;.</p>
-<h2 id="counting-syllables">Counting syllables</h2>
+get something usable for me that helps me speeding this up. Another part I had in mind was "finding a word that rhymes".</p>
+<h2 id="countingsyllables">Counting syllables</h2>
 <p>I was sure that something already exists out there to help me with that. A web-service. Something easy to use. I 
 could not really find it and by now I think I know why.</p>
 <p>The first implementation idea was to use a tool to put hyphens in words and just split on them. It works quite well on 
@@ -25,15 +25,15 @@ most of the words, but there are some which result in an incorrect number. Setti
 syllables really. The German word <code>oder</code> is a great example for this. You cannot split this word with a hyphen but 
 reading it out loud reveals two syllables: <code>o • der</code>. Another example would be <code>Ameise</code> which should be split into 
 <code>Amei- se</code> but actually has three syllables: <code>A • mei • se</code>.</p>
-<p>In my tests I&#39;ve used the <a href="https://github.com/ytiurin/hyphen">hyphen</a> module to check how it works out. Most of the 
+<p>In my tests I've used the <a href="https://github.com/ytiurin/hyphen">hyphen</a> module to check how it works out. Most of the 
 time, I got the correct result for the splits, but while testing, I found quite a few exceptions (like the ones above) 
-that made using the module not too nice. It works okay most of the time, but it&#39;s not really what I was looking for.</p>
-<p>You can still see old commits with <code>countSyllables</code> using this approach, but in the newer versions, I&#39;ve switched to 
+that made using the module not too nice. It works okay most of the time, but it's not really what I was looking for.</p>
+<p>You can still see old commits with <code>countSyllables</code> using this approach, but in the newer versions, I've switched to 
 another approach. That new approach is quite simple: Count all occurrences of one or two vowels that you find in a word.
-When I find exceptions, I&#39;ve added them by splitting on these kind of exceptions before counting this. This actually 
+When I find exceptions, I've added them by splitting on these kind of exceptions before counting this. This actually 
 yielded better results than expected, so I kept going further in this direction.</p>
-<p>The biggest problem I had with this is that I could not &quot;show&quot; the syllables / where it splits.</p>
-<h2 id="finding-rhymes">Finding rhymes</h2>
+<p>The biggest problem I had with this is that I could not "show" the syllables / where it splits.</p>
+<h2 id="findingrhymes">Finding rhymes</h2>
 <p>I thought this one was tougher than splitting words into syllables. For my purpose, I think I found something working 
 quite well: Checking a dictionary list if a word matches the last few characters of the word I put in. I admit, there 
 can be false positives with this approach, as the sound may not be completely correct. Having tested it for myself a bit
@@ -41,21 +41,20 @@ now, the results are not too bad and I get some creative input for finding the n
 <p>Manually changing the ending of a word in order to find words with the same sound but not exactly the same letters was
 okay for me. Using this is still a creative process and there are sometimes really unexpected results, but they usually
 lead to something that I would not have thought of.</p>
-<p>If I would try to make this better, I would have a look into phonetic word lists. If only I could find such lists...!</p>
+<p>If I would try to make this better, I would have a look into phonetic word lists. If only I could find such lists…!</p>
 <h2 id="demo">Demo</h2>
-<p>I&#39;ve created a little demo page inside of the repository that can be run when doing a <code>npm run demo</code>. This will start up
+<p>I've created a little demo page inside of the repository that can be run when doing a <code>npm run demo</code>. This will start up
 a small HTTP server via Python.</p>
-<p>Actually, in the meantime I&#39;ve decided to put it on GitHub pages itself. The demo is based on modules and a web worker
-for finding rhymes with the <code>findRhyme</code> function. As web workers are not readily available in browsers yet, I&#39;ve used
+<p>Actually, in the meantime I've decided to put it on GitHub pages itself. The demo is based on modules and a web worker
+for finding rhymes with the <code>findRhyme</code> function. As web workers are not readily available in browsers yet, I've used
 Rollup to build a bundle from the worker JavaScript source to find rhymes. Use <code>npm run build-demo</code> to update the
 <code>findRhyme</code> worker and give <a href="https://narigo.github.io/reimemonster/">the Reimemonster demo page</a> a spin yourself.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>There are a lot of exceptions regarding splitting words and also how to pronounce words such that finding rhymes yields
-better results. Because of the exceptions I&#39;ve always thought of ideas for machine learning. Maybe a neural net that 
+better results. Because of the exceptions I've always thought of ideas for machine learning. Maybe a neural net that 
 tells me what words could work well on the last sentence. But doing so is probably a lot more work and you need a lot of
 poems, etc.</p>
-<p>Also a database to look up things is probably necessary anyways for someone. So I&#39;d try to keep up working on this 
-before getting too deep into that rabbit hole.</p>
-</div></article> <footer>
+<p>Also a database to look up things is probably necessary anyways for someone. So I'd try to keep up working on this 
+before getting too deep into that rabbit hole.</p></div></article> <footer>
   © 2018 Jörn Bernhardt
 </footer></body></html>

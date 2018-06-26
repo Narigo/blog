@@ -1,6 +1,6 @@
 const fs = require("fs-extra");
 const { promisify } = require("util");
-const marked = require("marked");
+const showdown = require("showdown");
 const util = require("./util");
 const Vue = require("vue");
 const renderer = require("vue-server-renderer").createRenderer();
@@ -92,8 +92,9 @@ async function moveDraftToPost(name, config) {
 }
 
 async function getContentOfPost(directory, name) {
-  const content = (await readFile(`${directory}/${name}.md`)).toString();
-  return marked(content);
+	const content = (await readFile(`${directory}/${name}.md`)).toString();
+	const mdConverter = new showdown.Converter();
+  return mdConverter.makeHtml(content);
 }
 
 async function writePost({ post, day, month, year, config, directory }) {

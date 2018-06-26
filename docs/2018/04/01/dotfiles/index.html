@@ -1,23 +1,23 @@
 <html lang="en" data-server-rendered="true"><head><meta charset="UTF-8"> <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge"> <title>Dotfiles</title> <link rel="stylesheet" href="../../../../styles.css"></head> <body><header><h1>Random thoughts</h1> <nav class="main"><ul><li><a href="../../../../">Main</a></li> <li><a href="../../../../imprint.html">Imprint</a></li></ul></nav></header> <article><h2>Dotfiles</h2> <div class="data">
     01.04.2018
-    <!----></div> <div class="article"><h1 id="dotfiles-and-automating-repetitive-work">dotfiles and automating repetitive work</h1>
+    <!----></div> <div class="article"><h1 id="dotfilesandautomatingrepetitivework">dotfiles and automating repetitive work</h1>
 <p>Setting up servers, computers and other things made myself wonder about how I could automate or optimize my own 
-workflows. There are a lot of great examples what aliases people set up for themselves. I&#39;ve wondered if I could do the
+workflows. There are a lot of great examples what aliases people set up for themselves. I've wondered if I could do the
 same for myself and keep it modular for multiple operating systems as well. The project that I have been tinkering with
 is simply called <a href="https://github.com/Narigo/dotfiles">dotfiles</a> and is largely based on the input of great resources I 
 have found via <a href="https://dotfiles.github.io">dotfiles.github.io</a>.</p>
-<p>In my case, I&#39;ve been looking to get a backup for my regular dotfiles, which were not really complex when I started. 
-While working on it, I&#39;ve been digging into a lot of settings that help me automate and optimize commands and aliases. 
-As I was concerned about overwriting all my configuration files, I&#39;ve added a <code>backup</code> folder. Existing configuration
-files get a backup there before overwriting them now. I don&#39;t want to make that mistake twice...</p>
+<p>In my case, I've been looking to get a backup for my regular dotfiles, which were not really complex when I started. 
+While working on it, I've been digging into a lot of settings that help me automate and optimize commands and aliases. 
+As I was concerned about overwriting all my configuration files, I've added a <code>backup</code> folder. Existing configuration
+files get a backup there before overwriting them now. I don't want to make that mistake twice…</p>
 <p>There is also a dry-run option. Doing <code>. install.sh -d</code>  will generate all files in the <code>.dry-run/</code> directory, so you 
 can see what the resulting files will look like.</p>
-<h2 id="how-to-write-a-module">How to write a module</h2>
-<p>For now, my modules have simple &quot;commands&quot; which can be used. They can either copy all files into a directory (usually 
+<h2 id="howtowriteamodule">How to write a module</h2>
+<p>For now, my modules have simple "commands" which can be used. They can either copy all files into a directory (usually 
 <code>~/</code>) or concatenate all files into a single file residing somewhere. Through the former I can directly set 
 configuration files like <code>.gitconfig</code> and through the latter I can split aliases, setting of paths and adding scripted 
 logic into separate files. Maybe this will help me to reuse parts of it cross-platform later.</p>
-<p>Right now, I&#39;ve set up <code>.settings-macos</code> files in the two first modules, namely <code>git</code> and <code>shell</code>. In the 
+<p>Right now, I've set up <code>.settings-macos</code> files in the two first modules, namely <code>git</code> and <code>shell</code>. In the 
 <code>.settings-macos</code> I can either put a line like <code>platform_file=&lt;file_to_concatenate_into&gt;</code> or a line 
 <code>copy_files_to=&lt;directory_to_copy_into&gt;</code>. If the script finds a <code>platform_file</code>, it tries to concatenate all files in a
 single file. If it finds a <code>copy_files_to</code>, it will simply copy all files into that directory.</p>
@@ -26,15 +26,14 @@ single file. If it finds a <code>copy_files_to</code>, it will simply copy all f
 mind when doing anything inside of them.</p>
 <p>The shell module on the other hand, needs to concatenate multiple files into the <code>.bash_profile</code>. Usually, the 
 <code>.settings-macos</code> should contain <code>platform_file=$HOME/.bash_profile</code>.</p>
-<h2 id="extra-settings">Extra settings</h2>
+<h2 id="extrasettings">Extra settings</h2>
 <p>There are two special extra settings. The first file is to an arbitrary shell script running any commands we like on a 
 platform. This is useful to set various OS-dependant options and flags that make the system behave more like I want it 
-to. For example in MacOS it will set options for Finder that I think are better than the defaults. The second &quot;extra&quot;
+to. For example in MacOS it will set options for Finder that I think are better than the defaults. The second "extra"
 settings file is to set up user specific stuff. For me, it sets git user options etc.</p>
 <h2 id="conclusion">Conclusion</h2>
 <p>Creating a repository and thinking more about automating my own workflow really help to get repetitive things done much 
 faster. Working on it also leads to thinking more into a direction of DevOps: Scripting all of my configuration to
-prevent myself from making mistakes setting up a new machine.</p>
-</div></article> <footer>
+prevent myself from making mistakes setting up a new machine.</p></div></article> <footer>
   © 2018 Jörn Bernhardt
 </footer></body></html>
