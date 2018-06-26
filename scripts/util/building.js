@@ -72,12 +72,12 @@ async function publishDraft(name, config) {
   console.log(metaFileString);
   const metaArticle = JSON.parse(metaFileString);
   const html = await getContentOfPost(directory, name);
-  const { day, month, year, createdAt, lastEditedOn } = util.getDateFromPost(metaArticle, new Date().toISOString());
-  const meta = { createdAt, ...metaArticle, lastEditedOn };
+  const { day, month, year, createdAt } = util.getDateFromPost(metaArticle, new Date().toISOString());
+	const meta = { createdAt, ...metaArticle, lastEditedOn: createdAt.toISOString() };
 
   console.log(`Updating draft ${name} meta-data.`);
   await writeFile(metaFile, `${JSON.stringify(meta, null, 2)}\n`);
-  await writePost({ post: { meta, name, content: html }, day, month, year, config, directory });
+  await writePost({ post: { ...meta, name, content: html }, day, month, year, config, directory });
   await moveDraftToPost(name, config);
 }
 
@@ -118,7 +118,7 @@ async function writePost({ post, day, month, year, config, directory }) {
 }
 
 async function copyAssets(fromDir, toDir, { name }) {
-  fs.copy(fromDir, toDir, {
+  return fs.copy(fromDir, toDir, {
     filter: file => {
       const isPostOrMeta = file.endsWith(`${name}.json`) || file.endsWith(`${name}.md`);
       return !isPostOrMeta;

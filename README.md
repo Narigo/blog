@@ -25,3 +25,5 @@ npm run publish <name>
 ```
 
 This publishes a draft or updates an already published post with the name `<name>`.
+
+You need to run `npm run build` to make sure that the page with index will be built as well.
