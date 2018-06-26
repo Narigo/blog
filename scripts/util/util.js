@@ -1,6 +1,5 @@
 module.exports = {
   link(post) {
-    console.log("post=", post);
     const { day, month, year } = this.getDateFromPost(post.meta, post.meta.createdAt);
     const nf = n => (n < 10 ? "0" : "") + n;
     return `${year}/${nf(month)}/${nf(day)}/${post.name}`;

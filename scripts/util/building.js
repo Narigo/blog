@@ -69,7 +69,6 @@ async function publishDraft(name, config) {
   const directory = await getDirectoryOfPost(name, config);
   const metaFile = `${directory}/${name}.json`;
   const metaFileString = (await readFile(metaFile).catch(e => "{}")).toString();
-  console.log(metaFileString);
   const metaArticle = JSON.parse(metaFileString);
   const html = await getContentOfPost(directory, name);
   const { day, month, year, createdAt } = util.getDateFromPost(metaArticle, new Date().toISOString());
