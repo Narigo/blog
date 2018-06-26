@@ -1,0 +1,53 @@
+<html lang="en" data-server-rendered="true"><head><meta charset="UTF-8"> <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge"> <title>Crawling charts and make them searchable by date</title> <link rel="stylesheet" href="../../../../styles.css"></head> <body><header><h1>Random thoughts</h1> <nav class="main"><ul><li><a href="../../../../">Main</a></li> <li><a href="../../../../imprint.html">Imprint</a></li></ul></nav></header> <article><h2>Crawling charts and make them searchable by date</h2> <div class="data">
+    25.06.2018
+    <!----></div> <div class="article"><h1 id="crawling-charts-and-make-them-searchable-by-date">Crawling charts and make them searchable by date</h1>
+<p>Due to this <a href="https://twitter.com/larsr_h/status/1002516381672370178">tweet</a>, I wanted to find out what the song is that</p>
+<p>defines my life. I quickly found out that you can easily search that song, but I couldn&#39;t really find a simple database
+containing all the German charts.</p>
+<p>This is how <a href="https://narigo.github.io/charts/">this charts database</a> came into existence. If you want to see how it is
+built, I recommend checking out <a href="https://github.com/Narigo/charts">its source code on GitHub</a> while reading the rest of
+this post.</p>
+<h2 id="where-the-data-comes-from">Where the data comes from</h2>
+<p>Wikipedia does a great job archiving a lot of history. It&#39;s great finding out information and data, but it&#39;s not very
+convenient if you really want a database of similar facts. Answering the question &quot;When was which song in the charts?&quot;
+only works by switching pages to find other data.</p>
+<p>Here is a page containing all
+<a href="https://de.wikipedia.org/wiki/Liste_der_Nummer-eins-Hits_in_Deutschland_(1988">number one hits of Germany in 1988</a>&gt;).
+Switching to any other year since 1953 by changing the URL, you can see that it has all the information needed to
+generate a real database.</p>
+<p>As you can find out from the crawler source, it uses Wikipedia and reads all the data into a JSON file. The raw data
+sometimes seems to be a bit different with some inconsistent data regarding durations and where dates are put. This is
+why there are two scripts in the repository: <code>crawler.js</code> and <code>duration.js</code>. The crawler fetches the data from Wikipedia
+and the <code>duration.js</code> script fixes dates and more to compile all results from the crawler into a usable database.</p>
+<h2 id="crawling-the-data">Crawling the data</h2>
+<p>The crawling is done by using <a href="https://github.com/GoogleChrome/puppeteer">puppeteer</a>. It is a headless version of the
+Chrome browser which is very easy to automate through a script. The
+<a href="https://github.com/Narigo/charts/blob/master/crawler.js">crawler.js</a> script shows how to use it: First, we launch a
+browser &quot;window&quot; (<code>puppeteer.launch()</code>), then we open a new tab (<code>browser.newPage()</code>) and let this tab navigate to the
+desired URL (<code>page.goto(...)</code>). The option <code>waitUntil: &quot;networkIdle2&quot;</code> makes the promise resolve only when all initial
+network requests are done and the page looks like it is fully loaded. Through <code>page.evaluate()</code>, we can interact with
+the currently opened page. On it, we use vanilla JavaScript to read data from the page and return it. The result is
+returned to the caller of <code>page.evaluate()</code>.</p>
+<p>Cleaning up, we always close the browser when finishing a URL and we write down the results into a simple JSON file.</p>
+<h3 id="caveats">Caveats</h3>
+<p>While many pages look the same, there are some that change the structure of the tables we crawl. Have a look at the
+<a href="https://de.wikipedia.org/wiki/Liste_der_Nummer-eins-Hits_in_Deutschland_(1989">year 1989</a>&gt;) for example: The table
+containing the wanted information start to look different. If all pages were the same, we could always open the URL,
+crawl the page and read the data from the first table.</p>
+<p>There are other tables which look the same in style but are not at the same spot on the page. Or another table was put
+before the one we want to read. There are a lot of possibilities, so we need to use fallbacks. In the code, it is done
+by going through arrays of possibilities and testing if information can be scraped by using these selectors. If it is
+impossible to find singles or albums, it complains and we can see the error in the output.</p>
+<h2 id="make-the-data-searchable-by-duration">Make the data searchable by duration</h2>
+<p>The second script, called <a href="https://github.com/Narigo/charts/blob/master/duration.js">duration.js</a> takes the result of
+the crawler and puts the dates into a sortable format (<code>YYYY-MM-DD</code>). By doing so, we can check if a date falls into the
+duration of a song. It is simple to generate a search index by year this way, so a computer can quickly search through
+all of the entries in a year. Adding months as a second index would not really add value: Some songs were in the charts
+longer than one month, which would make the script a lot more complicated. Also, the entries in a year cannot exceed the
+number of weeks (yet) and even if it were &quot;by day&quot;, it will still be quickly enough for a computer to go through all the
+entries.</p>
+<p>The returned <code>result.json</code> is currently under 300kb (mid 2018). The 
+<a href="https://narigo.github.io/charts/">demonstration page</a> contains the whole database without making an additional call.</p>
+</div></article> <footer>
+  © 2018 Jörn Bernhardt
+</footer></body></html>
