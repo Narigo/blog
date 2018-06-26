@@ -1,7 +1,7 @@
 # Crawling charts and make them searchable by date
 
-Due to this [tweet](https://twitter.com/larsr_h/status/1002516381672370178), I wanted to find out what the song is that
-defines my life. I quickly found out that you can easily search that song, but I couldn't really find a simple database
+Due to this [tweet](https://twitter.com/larsr_h/status/1002516381672370178), I wanted to find out what the song is
+that defines my life. I quickly found out that you can easily search that song, but I couldn't really find a simple database
 containing all the German charts.
 
 This is how [this charts database](https://narigo.github.io/charts/) came into existence. If you want to see how it is
@@ -59,5 +59,5 @@ longer than one month, which would make the script a lot more complicated. Also,
 number of weeks (yet) and even if it were "by day", it will still be quickly enough for a computer to go through all the
 entries.
 
-The returned `result.json` is currently under 300kb (mid 2018). The 
+The returned `result.json` is currently under 300kb (mid 2018). The
 [demonstration page](https://narigo.github.io/charts/) contains the whole database without making an additional call.
