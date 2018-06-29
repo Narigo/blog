@@ -72,7 +72,7 @@ async function publishDraft(name, config) {
   const metaArticle = JSON.parse(metaFileString);
   const html = await getContentOfPost(directory, name);
   const { day, month, year, createdAt } = util.getDateFromPost(metaArticle, new Date().toISOString());
-	const meta = { createdAt, ...metaArticle, lastEditedOn: createdAt.toISOString() };
+  const meta = { createdAt, ...metaArticle, lastEditedOn: createdAt.toISOString() };
 
   console.log(`Updating draft ${name} meta-data.`);
   await writeFile(metaFile, `${JSON.stringify(meta, null, 2)}\n`);
@@ -92,8 +92,8 @@ async function moveDraftToPost(name, config) {
 }
 
 async function getContentOfPost(directory, name) {
-	const content = (await readFile(`${directory}/${name}.md`)).toString();
-	const mdConverter = new showdown.Converter();
+  const content = (await readFile(`${directory}/${name}.md`)).toString();
+  const mdConverter = new showdown.Converter({ tables: true });
   return mdConverter.makeHtml(content);
 }
 

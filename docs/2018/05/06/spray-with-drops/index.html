@@ -12,9 +12,22 @@ can use it in your application to create such an effect.</p>
 the pointer and randomly generating coordinates around it in a circle. The farther away the coordinates are, the
 smaller the generated circles will be drawn. Every animation frame, it will generate new random coordinates for as long
 as the pointer is pressed on the canvas. This results in a cool effect, which is best shown in pictures:</p>
-<p>| <img src="01_one_frame.png" alt="Spray pressed for just one frame" /> | <img src="02_few_frames.png" alt="Spray pressed for a short time" /> | <img src="03_many_frames.png" alt="Spray pressed for a longer time" /> |
-|:-----------------------------------------------------:|:----------------------------------------------------:|:------------------------------------------------------:|
-|              Pressed for just one frame               |       Pressed for a short time (a few frames)        |                Pressed for a long time                 |</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center;"><img src="01_one_frame.png" alt="Spray pressed for just one frame" /></th>
+<th style="text-align:center;"><img src="02_few_frames.png" alt="Spray pressed for a short time" /></th>
+<th style="text-align:center;"><img src="03_many_frames.png" alt="Spray pressed for a longer time" /></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">Pressed for just one frame</td>
+<td style="text-align:center;">Pressed for a short time (a few frames)</td>
+<td style="text-align:center;">Pressed for a long time</td>
+</tr>
+</tbody>
+</table>
 <p>In other applications, the spray can tool works similar and is done. But for us, we still need to generate the drops to
 make the tool behave like a real world spray can.</p>
 <p>A drop usually occurs, when you spray on the same spot for too long. If you spray just a bit, wait until the color

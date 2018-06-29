@@ -17,7 +17,7 @@ smaller the generated circles will be drawn. Every animation frame, it will gene
 as the pointer is pressed on the canvas. This results in a cool effect, which is best shown in pictures:
 
 | ![Spray pressed for just one frame](01_one_frame.png) | ![Spray pressed for a short time](02_few_frames.png) | ![Spray pressed for a longer time](03_many_frames.png) |
-|:-----------------------------------------------------:|:----------------------------------------------------:|:------------------------------------------------------:|
+| :---------------------------------------------------: | :--------------------------------------------------: | :----------------------------------------------------: |
 |              Pressed for just one frame               |       Pressed for a short time (a few frames)        |                Pressed for a long time                 |
 
 In other applications, the spray can tool works similar and is done. But for us, we still need to generate the drops to
