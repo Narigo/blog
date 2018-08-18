@@ -1,12 +1,12 @@
-<html lang="en" data-server-rendered="true"><head><meta charset="UTF-8"> <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge"> <title>A spray that drops</title> <link rel="stylesheet" href="../../../../styles.css"></head> <body><header><h1>Random thoughts</h1> <nav class="main"><ul><li><a href="../../../../">Main</a></li> <li><a href="../../../../imprint.html">Imprint</a></li></ul></nav></header> <article><h2>A spray that drops</h2> <div class="data">
+<html lang="en" data-server-rendered="true"><head><meta charset="UTF-8"> <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"> <meta http-equiv="X-UA-Compatible" content="ie=edge"> <title>A spray that drips</title> <link rel="stylesheet" href="../../../../styles.css"></head> <body><header><h1>Random thoughts</h1> <nav class="main"><ul><li><a href="../../../../">Main</a></li> <li><a href="../../../../imprint.html">Imprint</a></li></ul></nav></header> <article><h2>A spray that drips</h2> <div class="data">
     06.05.2018
-    <span class="last-edited-on">last edit on 08.05.2018</span></div> <div class="article"><h1 id="aspraythatdrops">A spray that drops</h1>
+    <!----></div> <div class="article"><h1 id="aspraythatdrips">A spray that drips</h1>
 <p>In a lot of drawing applications, you find a "spray" or "airbrush" tool. While most of them are actually quite nice to
 use, none of what I've seen so far behaves like a real spray can. A real spray can will make color drop down your
 canvas if you use it on the same spot for too long.</p>
-<p>The <a href="https://github.com/Narigo/dropping-spray">dropping-spray project</a> wants to change that. Written in JavaScript, you
+<p>The <a href="https://github.com/Narigo/dripping-spray">dripping-spray project</a> wants to change that. Written in JavaScript, you
 can use it in your application to create such an effect.</p>
-<p><img src="spray_with_drops.png" alt="Example of the spray with drops" /></p>
+<p><img src="spray_with_drips.png" alt="Example of the spray with drips" /></p>
 <h2 id="howdoesitwork">How does it work?</h2>
 <p>Like other airbrush tools, it randomly draws circles around your pointer. This is done by reading the coordinates of
 the pointer and randomly generating coordinates around it in a circle. The farther away the coordinates are, the
@@ -28,10 +28,10 @@ as the pointer is pressed on the canvas. This results in a cool effect, which is
 </tr>
 </tbody>
 </table>
-<p>In other applications, the spray can tool works similar and is done. But for us, we still need to generate the drops to
+<p>In other applications, the spray can tool works similar and is done. But for us, we still need to generate the drips to
 make the tool behave like a real world spray can.</p>
 <p>A drop usually occurs, when you spray on the same spot for too long. If you spray just a bit, wait until the color
-dries and spray again, it will not generate drops. If you press for a longer time, the drop will get bigger and move
+dries and spray again, it will not generate drips. If you press for a longer time, the drop will get bigger and move
 faster.</p>
 <p>To simulate this, we need to remember the coordinates where we put color to while we draw. If the coordinates we spray
 to count a high enough threshold, we begin generating a (small) drop. If we stop spraying, we reset the information to
@@ -40,7 +40,7 @@ have the "color dries up" effect. If we press for an even longer time, the drop 
 thickness is small, the line will be longer, if the thickness is bigger, the drop will stop early - as long as we stop
 spraying. The length and thickness is proportional to the amount of color we sprayed on the spot. This can be
 calculated by just counting how often (how many frames) the pointer kept drawing on the same coordinates.</p>
-<p><img src="single_drops.gif" alt="Single drops while pressing the pointer" /></p>
+<p><img src="single_drips.gif" alt="Single drips while pressing the pointer" /></p>
 <h2 id="technicaldetails">Technical details</h2>
 <p>While developing this tool, I wondered how to add tests to something that was a "frontend experiment" drawing randomly
 on a canvas. The <a href="https://twitter.com/wolframkriesing">test-driven development hero Wolfram Kriesing</a> made me aware
@@ -48,8 +48,8 @@ that drawing and calculating could be separated.</p>
 <p>This way, the calculations can be tested if they are done correctly. In addition, there can be different drawing
 mechanisms. For example not only a "drawing on canvas" but also using PixiJS instead of native canvas drawing or even
 creating an SVG from the shapes that should be drawn while pressing the pointer.</p>
-<p>In the <a href="https://github.com/Narigo/dropping-spray">dropping-spray code repository</a> you can have a look into the final
-code and how to use it. There is also <a href="https://narigo.github.io/dropping-spray/">an online demo of the dropping spray</a>
+<p>In the <a href="https://github.com/Narigo/dripping-spray">dripping-spray code repository</a> you can have a look into the final
+code and how to use it. There is also <a href="https://narigo.github.io/dripping-spray/">an online demo of the dripping spray</a>
 available.</p>
 <p><img src="example.gif" alt="Example of the final spray" /></p></div></article> <footer>
   © 2018 Jörn Bernhardt

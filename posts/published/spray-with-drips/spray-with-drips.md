@@ -1,13 +1,13 @@
-# A spray that drops
+# A spray that drips
 
 In a lot of drawing applications, you find a "spray" or "airbrush" tool. While most of them are actually quite nice to
 use, none of what I've seen so far behaves like a real spray can. A real spray can will make color drop down your
 canvas if you use it on the same spot for too long.
 
-The [dropping-spray project](https://github.com/Narigo/dropping-spray) wants to change that. Written in JavaScript, you
+The [dripping-spray project](https://github.com/Narigo/dripping-spray) wants to change that. Written in JavaScript, you
 can use it in your application to create such an effect.
 
-![Example of the spray with drops](spray_with_drops.png)
+![Example of the spray with drips](spray_with_drips.png)
 
 ## How does it work?
 
@@ -20,11 +20,11 @@ as the pointer is pressed on the canvas. This results in a cool effect, which is
 | :---------------------------------------------------: | :--------------------------------------------------: | :----------------------------------------------------: |
 |              Pressed for just one frame               |       Pressed for a short time (a few frames)        |                Pressed for a long time                 |
 
-In other applications, the spray can tool works similar and is done. But for us, we still need to generate the drops to
+In other applications, the spray can tool works similar and is done. But for us, we still need to generate the drips to
 make the tool behave like a real world spray can.
 
 A drop usually occurs, when you spray on the same spot for too long. If you spray just a bit, wait until the color
-dries and spray again, it will not generate drops. If you press for a longer time, the drop will get bigger and move
+dries and spray again, it will not generate drips. If you press for a longer time, the drop will get bigger and move
 faster.
 
 To simulate this, we need to remember the coordinates where we put color to while we draw. If the coordinates we spray
@@ -36,7 +36,7 @@ thickness is small, the line will be longer, if the thickness is bigger, the dro
 spraying. The length and thickness is proportional to the amount of color we sprayed on the spot. This can be
 calculated by just counting how often (how many frames) the pointer kept drawing on the same coordinates.
 
-![Single drops while pressing the pointer](single_drops.gif)
+![Single drips while pressing the pointer](single_drips.gif)
 
 ## Technical details
 
@@ -48,8 +48,10 @@ This way, the calculations can be tested if they are done correctly. In addition
 mechanisms. For example not only a "drawing on canvas" but also using PixiJS instead of native canvas drawing or even
 creating an SVG from the shapes that should be drawn while pressing the pointer.
 
-In the [dropping-spray code repository](https://github.com/Narigo/dropping-spray) you can have a look into the final
-code and how to use it. There is also [an online demo of the dropping spray](https://narigo.github.io/dropping-spray/)
+In the [dripping-spray code repository](https://github.com/Narigo/dripping-spray) you can have a look into the final
+code and how to use it. There is also [an online demo of the dripping spray](https://narigo.github.io/dripping-spray/)
 available.
 
 ![Example of the final spray](example.gif)
+
+**update:** *changed "dropping" to "dripping" spray thanks to [@cowglow](https://twitter.com/cowglow)*
